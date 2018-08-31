@@ -3,36 +3,36 @@
 class Main {
   
   static main () {
-    Main.setupAndStartServer();
+    Main.setupApp();
     Main.setupEndPoints();
+    Main.setupAndStartServer();
     Main.setupDB();
+  }
+
+  static setupApp(){
+    let express = require('express');
+    Main.app = express();
+    Main.port = Main.normalizePort(process.env.PORT || '3000');
+    Main.app.set('port', Main.port);
   }
   
   static setupAndStartServer() {
-    //
-    let express = require('express');
-    let http = require('http');
-    let app = express();
-    let port = Main.normalizePort(process.env.PORT || '3000');
-    let server;
-    //
-    app.set('port', port);
-    server = http.createServer(Main.app);
-    server.listen(port);
-    server.on('error', Main.onError);
-    server.on('listening', Main.onListening);
-    //
-    Main.app = app;
-    Main.server = server;
+    Main.server = require('http').createServer(Main.app);
+    Main.server.listen(Main.port);
+    Main.server.on('error', Main.onError);
+    Main.server.on('listening', Main.onListening);
   }
 
   static setupEndPoints(){
-    Main.app.use('/users', require('../users/UsersController.js'));
+    //
+    let userController = require("../users/UsersController.js");
+    userController.model = require("../users/UsersModel.js");
+    Main.app.use('/users', userController.router);
   }
 
   static setupDB(){
-    let mongoose = require('mongoose');
-    mongoose.connect('mongodb://yourMongoDBURIGoesHere');
+    //let mongoose = require('mongoose');
+    //mongoose.connect('mongodb://yourMongoDBURIGoesHere');
   }
 
   static normalizePort(val) {

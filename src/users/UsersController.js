@@ -1,32 +1,29 @@
 
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
+let BaseController = require('../spi/BaseController.js');
 
-router.use(bodyParser.urlencoded({ extended: true }));
-router.use(bodyParser.json());
+class UserController extends BaseController{
 
-var User = require('./UserModel');
+    buildRouter() {
 
-
-
-
-
-// CREATES A NEW USER
-router.post('/', function (req, res) {
-    User.create({
-            name : req.body.name,
-            email : req.body.email,
-            password : req.body.password
-        }, 
-        function (err, user) {
-            if (err) return res.status(500).send("There was a problem adding the information to the database.");
-            res.status(200).send(user);
+        // GET
+        this.router.get('/', function (req, res) {
+            res.send("GET llego");
         });
-});
 
-router.get('/', function(req, res){
-  res.send("GET llego");
-});
+        // POST
+        this.router.post('/', function (req, res) {
+            User.create({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            },
+                function (err, user) {
+                    if (err) return res.status(500).send("There was a problem adding the information to the database.");
+                    res.status(200).send(user);
+                });
+        });
+    }
+}
 
-module.exports = router;
+const userControllerSingleton = new UserController();
+module.exports = userControllerSingleton;

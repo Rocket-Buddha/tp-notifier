@@ -1,7 +1,7 @@
 
 let BaseController = require('../spi/BaseController.js');
 
-class UserController extends BaseController{
+class UserController extends BaseController {
 
     buildRouter() {
 
@@ -12,7 +12,7 @@ class UserController extends BaseController{
 
         // POST
         this.router.post('/', function (req, res) {
-            User.create({
+            model.create({
                 name: req.body.name,
                 email: req.body.email,
                 password: req.body.password

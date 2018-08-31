@@ -18,7 +18,7 @@ class BaseController {
         this.model = null;
     }
 
-    buildRouter(){
+    buildRouter() {
         throw new Error('You have to implement the method build router in your own extended class!');
     }
 }

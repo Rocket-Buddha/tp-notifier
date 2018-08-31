@@ -31,7 +31,10 @@ class Main {
 
   static setupDB() {
     let mongoose = require('mongoose');
-    mongoose.connect('mongodb://app:edu(calvo3amaestrador&de%nandues$@ds237932.mlab.com:37932/tp-notifier');
+    mongoose.connect('mongodb://app:1234abc@ds237932.mlab.com:37932/tp-notifier', { useNewUrlParser: true },
+      function (err) {
+        if (err) throw err;
+      });
   }
 
   static normalizePort(val) {

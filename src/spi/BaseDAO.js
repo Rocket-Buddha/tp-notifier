@@ -1,7 +1,7 @@
-class BaseModel {
+class BaseDAO {
 
     constructor() {
-        if (new.target === BaseModel) {
+        if (new.target === BaseDAO) {
             throw new TypeError("Cannot construct Abstract instances directly");
         }
         this.schema = null;
@@ -19,4 +19,4 @@ class BaseModel {
     }
 }
 
-module.exports = BaseModel;
+module.exports = BaseDAO;

@@ -1,7 +1,7 @@
 
-let BaseModel = require('../spi/BaseModel.js');
+let BaseDAO = require('../spi/BaseDAO.js');
 
-class UsersModel extends BaseModel {
+class UsersDAO extends BaseDAO {
   buildSchema(){
     this.schema = this.mongoose.model('Users', new this.mongoose.Schema({
       username: String,
@@ -11,5 +11,5 @@ class UsersModel extends BaseModel {
   }
 }
 
-const usersModelSingleton = new UsersModel();
-module.exports = usersModelSingleton;
+const usersDAOSingleton = new UsersDAO();
+module.exports = usersDAOSingleton;

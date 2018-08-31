@@ -12,16 +12,22 @@ class UserController extends BaseController {
 
         // POST
         this.router.post('/', function (req, res) {
-            model.create({
-                name: req.body.name,
-                email: req.body.email,
-                password: req.body.password
+            require('./UsersModel').create({
+                username: req.body.username,
+                password: req.body.password,
+                email: req.body.email
             },
                 function (err, user) {
+                    console.log("llego al callback");
                     if (err) return res.status(500).send("There was a problem adding the information to the database.");
                     res.status(200).send(user);
                 });
         });
+
+       /** this.router.post('/', function (req, res) {
+            console.log(req.body.username);
+            res.send("POST llego");
+        }); **/
     }
 }
 

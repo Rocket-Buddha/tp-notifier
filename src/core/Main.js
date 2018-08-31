@@ -24,15 +24,14 @@ class Main {
   }
 
   static setupEndPoints() {
-    //
+    //  
     let userController = require("../users/UsersController.js");
-    userController.model = require("../users/UsersModel.js");
     Main.app.use('/users', userController.router);
   }
 
   static setupDB() {
-    //let mongoose = require('mongoose');
-    //mongoose.connect('mongodb://yourMongoDBURIGoesHere');
+    let mongoose = require('mongoose');
+    mongoose.connect('mongodb://app:edu(calvo3amaestrador&de%nandues$@ds237932.mlab.com:37932/tp-notifier');
   }
 
   static normalizePort(val) {

@@ -1,26 +1,34 @@
 
+//Imports
+// Controlador base definido por la arquitectura de referencia.
 let BaseController = require('../spi/BaseController.js');
+// Entidad Usuario plana.
+let User = require('./User.js')
 
 class UserController extends BaseController {
 
+    //Implementacion del buildRoutes particular del controlador de de Usuarios.
     buildRouter() {
         // POST
         this.router.post('/', function (req, res) {
-            require('./UsersDAO').create({
-                username: req.body.username,
-                password: req.body.password,
-                email: req.body.email
-            },
-                function (err, user) {
-                    if (err) return res.status(500).send("There was a problem adding the information to the database.");
-                    res.status(200).json({
-                        "status": "Ok",
-                        "message": "Se ha registrado correctamente"
-                    });
+            // Declaro e instancio el usuario.
+            let user = (new User(null, req.body.username,
+                req.body.password,
+                req.body.email));
+            // Utilizo el DAO particular del controlador para que lo persista.
+            // No puedo usarlo como atributo por que en este contexto no tiene sentido (En JS, Java lo resulve :( ).
+            require('./UsersDAO').create(user, function (err, user) {
+                // Si hay un error. Mando el error.
+                if (err) return res.status(500).send("There was a problem adding the information to the database.");
+                // Sino muesto la salida definida.
+                res.status(200).json({
+                    "status": "Ok",
+                    "message": "Se ha registrado correctamente"
                 });
+            })
         });
     }
 }
-
+// Singleton del controlador de Usuarios. Me aseguro que no haya mas instancias.
 const userControllerSingleton = new UserController();
 module.exports = userControllerSingleton;

@@ -11,9 +11,15 @@ class UserController extends BaseController {
     buildRouter() {
         // POST
         this.router.post('/', function (req, res) {
-            // Declaro e instancio el usuario.
+            // El pass no puede quedar en claro.
+            // Traigo el Singleton de properties.
+            let properties = require('../helpers/Properties.js');
+            // Hasheo.
+            let bcrypt = require('bcrypt');
+            let hashedPass = bcrypt.hashSync(req.body.password, properties.get('db.crypt.rounds'));
+            // Declaro e instancio el usuario pero con el pass hasheado.
             let user = (new User(req.body.username,
-                req.body.password,
+                hashedPass,
                 req.body.email));
             // Utilizo el DAO particular del controlador para que lo persista.
             // No puedo usarlo como atributo por que en este contexto no tiene sentido (En JS, Java lo resulve :( ).

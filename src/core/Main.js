@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-// Constante que guarda el file path a las properties.
-const PROPERTIES_FILE_PATH = './env/app.properties';
-
 // Clase Main para punto de entrada de la aplicacion.
 // Tener en cuenta que desde un contexto estatico,
 // solo puedo hacer uso de miembros que tambien son estaticos.
@@ -18,8 +15,6 @@ class Main {
 
   // Metodo destinado a hacer las configuraciones de la app.
   static setupApp() {
-    // Declaro e instancio properties. Un objeto que me permite manejar properties.
-    Main.properties = require('properties-reader')(PROPERTIES_FILE_PATH);
     // Express config.
     let express = require('express');
     Main.app = express();
@@ -43,6 +38,8 @@ class Main {
 
     // Obtiene el singleton del controlador de usuarios y mapea su router en la app.
     Main.app.use('/users', require("../users/UsersController.js").router);
+    // Obtiene el singleton del controlador de autenticacion y mapea su router en la app.
+    Main.app.use('/authenticate', require("../auth/AuthController.js").router);
 
   }
 
@@ -57,17 +54,19 @@ class Main {
 
   // Metodo destinado a armar el string de conexion.
   static buildConnectionString() {
-    
+    // Traigo el Singleton de properties.
+    let properties = require('../helpers/Properties.js');
+    // Retorno el string armado.
     return 'mongodb://'
-      + Main.properties.get('db.mongo.user')
+      + properties.get('db.mongo.user')
       + ':'
-      + Main.properties.get('db.mongo.pass')
+      + properties.get('db.mongo.pass')
       + '@'
-      + Main.properties.get('db.mongo.host')
+      + properties.get('db.mongo.host')
       + ':'
-      + Main.properties.get('db.mongo.port')
+      + properties.get('db.mongo.port')
       + '/'
-      + Main.properties.get('db.mongo.schema');
+      + properties.get('db.mongo.schema');
 
   }
 

@@ -9,7 +9,7 @@ class BaseDAO {
         }
         // Declaracion e instanciacion de atributos.
         this.mongoose = require('mongoose');
-        this.buildSchema;
+        // Llamado la funcion que buildea el schema segun la definicion en el subtipo.
         this.buildSchema();
     }
 
@@ -18,9 +18,18 @@ class BaseDAO {
         throw new Error('You have to implement the method build router in your own extended class!');
     }
 
-    // Methodo para persistir por primera vez el objeto.
+    // Metodo para persistir por primera vez el objeto.
     create(pObject, pErrorCallback) {
        this.schema.create(pObject, pErrorCallback);
+    }
+
+    // Metodo para encontrar un doc por algun parametro.
+    findOne(pQuery, pCallback){
+        this.schema.findOne(pQuery, pCallback);
+    }
+
+    getAll(pCallback){
+        this.schema.find({}, pCallback);
     }
 }
 //Export de la definicion de la clase abstracta BaseDao definida en el arquetipo.

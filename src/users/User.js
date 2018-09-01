@@ -2,11 +2,9 @@
 class User  {
 
     // Constructor con todos los atributos.
-    constructor(pId,
-        pUsername,
+    constructor(pUsername,
         pPassword,
         pEmail) {
-            this.id = pId;
             this.username = pUsername;
             this.password = pPassword;
             this.email = pEmail;

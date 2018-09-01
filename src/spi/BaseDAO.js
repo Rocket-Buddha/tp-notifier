@@ -12,7 +12,7 @@ class BaseDAO {
         this.buildSchema;
         this.buildSchema();
     }
-    
+
     // Metodo a ser implementado por el subtipo para definir el esquema de persistencia para la entidad.
     buildSchema() {
         throw new Error('You have to implement the method build router in your own extended class!');
@@ -20,12 +20,7 @@ class BaseDAO {
 
     // Methodo para persistir por primera vez el objeto.
     create(pObject, pErrorCallback) {
-        var flag = this.schema.create(this.getCreateSchema(pObject), pErrorCallback);
-    }
-
-    // Metodo a ser implementado por el subtipo para generar el esquema adecuado segun la entidad.
-    getCreateSchema(pObject){
-        throw new Error('You have to implement the method build router in your own extended class!');
+       this.schema.create(pObject, pErrorCallback);
     }
 }
 //Export de la definicion de la clase abstracta BaseDao definida en el arquetipo.

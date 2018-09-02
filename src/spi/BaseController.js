@@ -23,6 +23,35 @@ class BaseController {
     buildRouter() {
         throw new Error('You have to implement the method build router in your own extended class!');
     }
+
+    //
+    responseBadRequest(pRes) {
+        pRes.status(400).json({
+            "status": "Error",
+            "message": "Request invalido"
+        });
+    }
+
+    responseInvalidToken(pRes) {
+        pRes.status(401).json({
+            "status": "Error",
+            "message": "Token Invalido"
+        });
+    }
+
+    responseInternalServerError(pRes) {
+        pRes.status(500).json({
+            "status": "Error",
+            "message": "Error desconocido"
+        });
+    }
+
+    responseInvalidCredentials(pRes) {
+        pRes.status(401).json({
+            "status": "Error",
+            "message": "Credenciales invalidas"
+        });
+    }
 }
 // Definicion de la clase BaseController.
 module.exports = BaseController;

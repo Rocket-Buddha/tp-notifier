@@ -40,6 +40,8 @@ class Main {
     Main.app.use('/users', require("../users/UsersController.js").router);
     // Obtiene el singleton del controlador de autenticacion y mapea su router en la app.
     Main.app.use('/authenticate', require("../auth/AuthController.js").router);
+    // Obtiene el singleton del controlador de mensajes y mapea su router en la app.
+    Main.app.use('/messages', require("../messages/MessagesController.js").router);
 
   }
 

@@ -6,7 +6,11 @@ class JWT {
     }
 
     sign(pPayload, pCallback) {
-        this.jwt.sign(pPayload, this.properties.get('jwt.token.secret'),pCallback);
+        this.jwt.sign(pPayload, this.properties.get('jwt.token.secret'), pCallback);
+    }
+
+    verify(pToken, pCallback) {
+        this.jwt.verify(pToken, this.properties.get('jwt.token.secret'), pCallback);
     }
 }
 

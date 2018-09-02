@@ -131,27 +131,6 @@ class AuthController extends BaseController {
             });
         });
     }
-
-    responseBadRequest(pRes) {
-        pRes.status(400).json({
-            "status": "Error",
-            "message": "Request invalido"
-        });
-    }
-
-    responseInternalServerError(pRes) {
-        pRes.status(500).json({
-            "status": "Error",
-            "message": "Error desconocido"
-        });
-    }
-
-    responseInvalidCredentials(pRes) {
-        pRes.status(401).json({
-            "status": "Error",
-            "message": "Credenciales invalidas"
-        });
-    }
 }
 // Singleton del controlador de Auth. Me aseguro que no haya mas instancias.
 const authControllerSingleton = new AuthController();

@@ -1,82 +1,155 @@
 //Imports
 // Controlador base definido por la arquitectura de referencia.
 let BaseController = require('../spi/BaseController.js');
+// Definicion de la clase Usuario.
+let User = require('../users/User.js');
 
 class AuthController extends BaseController {
     //Implementacion del buildRoutes particular del controlador de de Usuarios.
     buildRouter() {
-        // POST
-        this.router.post('/', function (req, res) {
-            // Verifico que el request sea correcto.
-            if (req.body.username
-                && req.body.password) {
-                // Verifico que el usuario exista.
-                require('../users/UsersDAO.js').findOne({ 'username': req.body.username }, function (err, resad) {
-                    // Verifico si hubo un error.
-                    if (err) {
-                        res.status(500).json({
-                            "status": "Error",
-                            "message": "Error interno, pudrete flanders"
+        this.router.post('/', (req, res) => {
+            // Objeto scope destinado a guardar variables de contexto necesarias entre promesas.
+            let scope = {};
+            // Verifico que el request sea valido.
+            if (this.checkPostRequest(req)) {
+                let requestUser = new User(req.body.username,
+                    req.body.password,
+                    req.body.email);
+                // Comienza la cadena de promesas.
+                this.checkUserExistence(requestUser)
+                    .then((persistedUser) => {
+                        if (persistedUser != null) {
+                            scope.user = persistedUser;
+                            return this.checkPassword(requestUser.password, persistedUser.password);
+                        }
+                    })
+                    .then((result) => {
+                        return this.generateToken(scope.user);
+                    })
+                    .then((token) => {
+                        scope.token = token;
+                        return this.getAllUsersArray()
+                    })
+                    .then((usernamesArray) => {
+                        res.status(200).json({
+                            "token": scope.token,
+                            "users": usernamesArray
                         });
-                    }
-                    else {
-                        // Existe ? 
-                        if (resad.password) {
-                            // Verifico que la password sea correcta.
-                            if (require('../helpers/Crypt.js').comparePasswords(req.body.password, resad.password)) {
-                                // Genero el token.
-                                require('../helpers/JWT.js').sign({ foo: 'bar' }, function (err, token) {
-                                    if (err) {
-
-                                    }
-                                    else {
-                                        require('../users/UsersDAO.js').getAll(function (err, users) {
-                                            if (err) {
-
-                                            } else {
-
-                                                let usernames = [];
-                                                users.forEach(function (element) {
-                                                    usernames.push(element.username);
-                                                });
-
-                                                // Respondo.
-                                                res.status(200).json({
-                                                    "token": token,
-                                                    "users": usernames
-                                                });
-                                            }
-                                        });
-
-                                    }
-                                })
-                            }
-                            // Contrasenia incorrecta.
-                            else {
-                                res.status(401).json({
-                                    "status": "Error",
-                                    "message": "Credenciales invalidas"
-                                });
-                            }
+                    })
+                    .catch(err => {
+                        switch (err) {
+                            case 0:
+                                this.responseInternalServerError(res);
+                                break;
+                            case 1:
+                                this.responseInvalidCredentials(res);
+                                break;
+                            default:
+                                this.responseInternalServerError(res);
                         }
-                        // No existe el usuario.
-                        else {
-                            res.status(401).json({
-                                "status": "Error",
-                                "message": "Credenciales invalidas"
-                            });
-                        }
-                    }
 
-                });
+                    });
             }
-            //Request invalido.
             else {
-                res.status(400).json({
-                    "status": "Error",
-                    "message": "Request invalido"
-                });
+                this.responseBadRequest(res)
             }
+        });
+    }
+
+    checkPostRequest(pRequest) {
+        return pRequest.body.username
+            && pRequest.body.password
+    }
+
+    checkUserExistence(pUser) {
+        return new Promise((promiseSucesfull, promiseFail) => {
+            require('../users/UsersDAO.js').findOne({ 'username': pUser.username }, (err, persistedUser) => {
+                if (err) {
+                    // Hubo un error al tratar de recuperar de la bd el usuario.
+                    throw 0;
+                }
+                else if (persistedUser) {
+                    // El usuario fue recuperado con exito.
+                    promiseSucesfull(persistedUser);
+                }
+                else {
+                    // No existe el usuario. Credenciales invalidas.
+                    promiseFail(1);
+                }
+            });
+        });
+    }
+
+    checkPassword(pPassClear, pPassHashed) {
+        return new Promise((promiseSucesfull, promiseFail) => {
+            require('../helpers/Crypt.js').comparePasswords(pPassClear, pPassHashed, (err, result) => {
+                if (err) {
+                    // Hubo un error al tratar de comparar los hashes.
+                    promiseFail(0);
+                }
+                else if (result) {
+                    promiseSucesfull(true);
+                }
+                else {
+                    //Password no matchea. Credenciales invalidas.
+                    promiseFail(1);
+                }
+            });
+        });
+    }
+
+    generateToken(pUser) {
+        return new Promise((promiseSucesfull, promiseFail) => {
+            require('../helpers/JWT.js').sign({
+                'username': pUser.username,
+                'email': pUser.email
+            }, (err, token) => {
+                if (err) {
+                    // Error interno al generar el token.
+                    promiseFail(0);
+                }
+                else {
+                    promiseSucesfull(token);
+                }
+            });
+        });
+    }
+
+    getAllUsersArray() {
+        return new Promise((promiseSucesfull, promiseFail) => {
+            require('../users/UsersDAO.js').getAll((err, users) => {
+                if (err) {
+                    promiseFail(0);
+                }
+                else {
+                    let usernames = [];
+                    users.forEach(function (element) {
+                        usernames.push(element.username);
+                    });
+                    promiseSucesfull(usernames);
+                }
+            });
+        });
+    }
+
+    responseBadRequest(pRes) {
+        pRes.status(400).json({
+            "status": "Error",
+            "message": "Request invalido"
+        });
+    }
+
+    responseInternalServerError(pRes) {
+        pRes.status(500).json({
+            "status": "Error",
+            "message": "Error desconocido"
+        });
+    }
+
+    responseInvalidCredentials(pRes) {
+        pRes.status(401).json({
+            "status": "Error",
+            "message": "Credenciales invalidas"
         });
     }
 }

@@ -21,8 +21,8 @@ class Crypt {
     }
     
     // Esto en produccion habria que migrarlo a asincronico!!!!
-    comparePasswords(pPlainPassword, pHashedPassword){
-       return this.bcrypt.compareSync(pPlainPassword, pHashedPassword)
+    comparePasswords(pPlainPassword, pHashedPassword, pCallback){
+       return this.bcrypt.compare(pPlainPassword, pHashedPassword, pCallback);
     }
     
 }

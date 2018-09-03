@@ -22,6 +22,7 @@ class MessagesController extends BaseController {
                         this.MessagePostedSuccessfully(res);
                     })
                     .catch(err => {
+                        console.log(err);
                         switch (err) {
                             case 0:
                                 this.responseInternalServerError(res);
@@ -71,7 +72,7 @@ class MessagesController extends BaseController {
         return new Message(pDecodeToken.username,
             pRequest.body.destinatarios,
             pRequest.body.mensaje,
-            (new Date()).toUTCString(),
+            require('../helpers/Time.js').getTimeString(),
             false,
         );
     }

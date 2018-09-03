@@ -46,6 +46,32 @@ class MessagesController extends BaseController {
                 this.responseBadRequest(res);
             }
         });
+
+        //GET
+        this.router.get("/", (req, res) => {
+            // Chequeo el token.
+            this.checkToken(this.getTokenFromRequest(req))
+                .then((decode) => {
+                  return this.getAllUserRecivedMessages(decode.username);
+                })
+                .then((messages)=>{
+                    console.log(messages);
+                    res.status(200).json(messages);
+                })
+                .catch(err => {
+                    console.log(err);
+                    switch (err) {
+                        case 0:
+                            this.responseInternalServerError(res);
+                            break;
+                        case 1:
+                            this.responseInvalidToken(res);
+                            break;
+                        default:
+                            this.responseInternalServerError(res);
+                    }
+                });
+        });
     }
 
     /**
@@ -129,6 +155,39 @@ class MessagesController extends BaseController {
     MessagePostedSuccessfully(pRes) {
         pRes.status(200).json({
             "Mensaje": "Mensaje posteado con exito"
+        });
+    }
+
+    /**
+     * Metodo que devuelve todos los mensajes que recibio el usuario.
+     * @param {String} pUsername
+     */
+    getAllUserRecivedMessages(pUsername) {
+        return new Promise((promiseSucesfull, promiseFail) => {
+            require('./MessagesDAO.js').find({ 'recipients': { $elemMatch: { username: pUsername } } }
+                , (err, res) => {
+                    if (err) {
+                        promiseFail(0);
+                    }
+                    else {
+                        // Objeto que se va a enviar en la respuesta.
+                        let messagesRespond = {
+                            "status": "Ok",
+                            "totalMensajes": res.length,
+                            "mensajesRecibidos": []
+                        }
+                        // Por cada mensaje
+                        res.forEach(function (element) {
+                            messagesRespond.mensajesRecibidos.push({
+                                "remitente": element.sender,
+                                "mensaje": element.message,
+                                "enviado": element.timestamp,
+                                "leido": element.readed
+                            });
+                        });
+                        promiseSucesfull(messagesRespond);
+                    }
+                });
         });
     }
 }

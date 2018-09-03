@@ -43,6 +43,15 @@ class BaseDAO {
     }
 
     /**
+     * Metodo para encontrar docs de mensajes por una query.
+     * @param {Object} pQuery  - Query de consulta.
+     * @param {Function} pCallback - Funcion de callback para cuando termine de ejecutar.
+     */
+    find(pQuery, pCallback){
+        this.schema.find(pQuery, pCallback);
+    }
+
+    /**
      * Metodo invocado para obtener todos los docs del esquema.
      * @param {Function} pCallback -  Callback para ejecutar cuando finalice la ejecucion.
      */

@@ -1,2 +1,12 @@
-# tp-notifier
-TP 1 Técnicas avanzadas de programación.
+# Tecnicas avanzadas de programacion - Trabajo practico N° 1
+[TOC]
+
+## Resumen
+
+## Deploy
+
+## Testing
+
+## Librerias utilizadas
+
+## Arquitectura

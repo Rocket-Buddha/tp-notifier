@@ -1,11 +1,16 @@
 #!/usr/bin/env node
 
-// Clase Main para punto de entrada de la aplicacion.
 // Tener en cuenta que desde un contexto estatico,
 // solo puedo hacer uso de miembros que tambien son estaticos.
+
+/** 
+ * Clase Main para punto de entrada de la aplicacion. 
+ */
 class Main {
 
-  // Metodo main, punto de entrada. Ver ultima linea del archivo.
+  /**
+   * Metodo main, punto de entrada. Ver ultima linea del archivo.
+   */
   static main() {
     Main.setupApp();
     Main.setupEndPoints();
@@ -13,7 +18,9 @@ class Main {
     Main.setupDB();
   }
 
-  // Metodo destinado a hacer las configuraciones de la app.
+  /**
+   * Metodo destinado a hacer las configuraciones de la app.
+   */
   static setupApp() {
     // Express config.
     let express = require('express');
@@ -23,7 +30,9 @@ class Main {
     Main.app.set('port', Main.port);
   }
 
-  // Metodo detinado a configurar la app, el server y levantarlo.
+  /**
+   * Metodo detinado a configurar la app, el server y levantarlo.
+   */
   static setupAndStartServer() {
     Main.server = require('http').createServer(Main.app);
     Main.server.listen(Main.port);
@@ -31,19 +40,23 @@ class Main {
     Main.server.on('listening', Main.onListening);
   }
 
-  // Metodo destinado a rutear todos los endpoint de la API.
+  /**
+   * Metodo destinado a rutear todos los endpoint de la API.
+   */
   static setupEndPoints() {
-
     // Se debera aplicar una de estas lineas por cada endpoint.
-
     // Obtiene el singleton del controlador de usuarios y mapea su router en la app.
     Main.app.use('/users', require("../users/UsersController.js").router);
     // Obtiene el singleton del controlador de autenticacion y mapea su router en la app.
     Main.app.use('/authenticate', require("../auth/AuthController.js").router);
+    // Obtiene el singleton del controlador de mensajes y mapea su router en la app.
+    Main.app.use('/messages', require("../messages/MessagesController.js").router);
 
   }
 
-  // Metodo destinado a conectar la base de datos.
+  /**
+   * Metodo destinado a conectar la base de datos.
+   */
   static setupDB() {
     let mongoose = require('mongoose');
     mongoose.connect(Main.buildConnectionString(), { useNewUrlParser: true },
@@ -52,7 +65,10 @@ class Main {
       });
   }
 
-  // Metodo destinado a armar el string de conexion.
+  /**
+   * Metodo destinado a armar el string de conexion.
+   * @return {String} Devuelve el String de conexion a MongoDB.
+   */
   static buildConnectionString() {
     // Traigo el Singleton de properties.
     let properties = require('../helpers/Properties.js');
@@ -70,7 +86,11 @@ class Main {
 
   }
 
-  // Metodo para obtener el puerto, ya se configurado por defecto o desde una variable de entorno.
+  /**
+   * Metodo para normalizar el valor del puerto.
+   * @param {Boolean} val  - Valor del puerto.
+   * @return {*} Puede devolver el valor del puerto o false si no fue posible la normalizacion.
+   */
   static normalizePort(val) {
     let port = parseInt(val, 10);
     if (isNaN(port)) {
@@ -82,16 +102,18 @@ class Main {
     return false;
   }
 
-  // Callback de error al levantar el server.
+  /**
+   * Callback de error al levantar el server.
+   * @param {Error} error
+   * @return {Error} Error mas especifico devuelta.
+   */
   static onError(error) {
     if (error.syscall !== 'listen') {
       throw error;
     }
-
     let bind = typeof port === 'string'
       ? 'Pipe ' + port
       : 'Port ' + port;
-
     switch (error.code) {
       case 'EACCES':
         console.error(bind + ' requires elevated privileges');
@@ -106,7 +128,9 @@ class Main {
     }
   }
 
-  // Callback de server levantado.
+  /**
+   * Callback de server levantado.
+   */
   static onListening() {
     let debug = require('debug')('tp-notifier:server');
     let addr = Main.server.address();

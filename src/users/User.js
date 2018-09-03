@@ -1,7 +1,11 @@
-// Clase de entidad Usuario.
+/**
+ * Clase de entidad Usuario.
+ */
 class User  {
 
-    // Constructor con todos los atributos.
+    /**
+     * Constructor con todos los atributos. 
+     */
     constructor(pUsername,
         pPassword,
         pEmail) {
@@ -10,5 +14,6 @@ class User  {
             this.email = pEmail;
     }
 }
+
 // Exportacion de definicion de la clase.
 module.exports = User;

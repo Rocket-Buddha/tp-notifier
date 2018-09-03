@@ -3,9 +3,14 @@
 // Controlador base definido por la arquitectura de referencia.
 let BaseController = require('../spi/BaseController.js');
 
+/**
+ * Clase de controllador de usuarios.
+ */
 class UserController extends BaseController {
 
-    //Implementacion del buildRoutes particular del controlador de de Usuarios.
+    /**
+     * Implementacion del buildRoutes particular del controlador de de Usuarios.
+     */
     buildRouter() {
         // POST
         this.router.post('/', function (req, res) {
@@ -31,7 +36,7 @@ class UserController extends BaseController {
                         else {
                             return res.status(500).json({
                                 "status": "Error",
-                                "message": "Eror desconocido al intentar agregar el uasuario a la base"
+                                "message": "Eror desconocido al intentar agregar el usuario a la base"
                             });
                         }
                     }
@@ -53,6 +58,7 @@ class UserController extends BaseController {
         });
     }
 }
+
 // Singleton del controlador de Usuarios. Me aseguro que no haya mas instancias.
 const userControllerSingleton = new UserController();
 module.exports = userControllerSingleton;

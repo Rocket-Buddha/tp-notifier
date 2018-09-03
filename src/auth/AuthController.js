@@ -4,8 +4,14 @@ let BaseController = require('../spi/BaseController.js');
 // Definicion de la clase Usuario.
 let User = require('../users/User.js');
 
+/**
+ *  Clase controladora de la autenticacion. 
+ */
 class AuthController extends BaseController {
-    //Implementacion del buildRoutes particular del controlador de de Usuarios.
+    
+    /**
+     * Implementacion del buildRoutes particular del controlador de de Usuarios.
+     */
     buildRouter() {
         this.router.post('/', (req, res) => {
             // Objeto scope destinado a guardar variables de contexto necesarias entre promesas.
@@ -36,6 +42,7 @@ class AuthController extends BaseController {
                             "users": usernamesArray
                         });
                     })
+                    // Catcheo de errores de los fails de las promesas.
                     .catch(err => {
                         switch (err) {
                             case 0:
@@ -50,17 +57,28 @@ class AuthController extends BaseController {
 
                     });
             }
+            // Si el request no esta bien formado respondo que el request es invalido.
             else {
                 this.responseBadRequest(res)
             }
         });
     }
-
+    
+    /**
+     * Metodo que checkea que el request del login este bien formado.
+     * @param {Object} pRequest  - Request de entrada.
+     * @return {Boolean} Si el request es valido o no.
+     */
     checkPostRequest(pRequest) {
         return pRequest.body.username
             && pRequest.body.password
     }
 
+    /**
+     *  Metodo que checkea si el usuario existe.
+     * @param {User} pUser - Objeto Usuario.
+     * @return {Promise} Promesa de chequiar la existencia del usuario.
+     */
     checkUserExistence(pUser) {
         return new Promise((promiseSucesfull, promiseFail) => {
             require('../users/UsersDAO.js').findOne({ 'username': pUser.username }, (err, persistedUser) => {
@@ -80,6 +98,12 @@ class AuthController extends BaseController {
         });
     }
 
+    /**
+     * Metodo que verifica que los passwords matcheen.
+     * @param {String} pPassClear - String de password en claro que viene en el request.
+     * @param {String} pPassHashed - String de password hasheado que esta en base.
+     * @return {Promise} Promesa de informar si el password coincide o no.
+     */
     checkPassword(pPassClear, pPassHashed) {
         return new Promise((promiseSucesfull, promiseFail) => {
             require('../helpers/Crypt.js').comparePasswords(pPassClear, pPassHashed, (err, result) => {
@@ -97,9 +121,15 @@ class AuthController extends BaseController {
             });
         });
     }
-
+    
+    /**
+     * Metodo que genera el token para un usuario determinado.
+     * @param {User} pUser - Objeto usuario para el cual quiero generar el token.
+     * @return {Promise} Promesa de devolver el String del token generado.
+     */
     generateToken(pUser) {
         return new Promise((promiseSucesfull, promiseFail) => {
+            // Genera el token, pasandole el payload.
             require('../helpers/JWT.js').sign({
                 'username': pUser.username,
                 'email': pUser.email
@@ -115,6 +145,10 @@ class AuthController extends BaseController {
         });
     }
 
+    /**
+     * Metodo para obtener un array con todos los nombres de usuarios de los usuarios.
+     * @return {Promise} Promesa de pasar el array de usuarios.
+     */
     getAllUsersArray() {
         return new Promise((promiseSucesfull, promiseFail) => {
             require('../users/UsersDAO.js').getAll((err, users) => {
@@ -132,6 +166,7 @@ class AuthController extends BaseController {
         });
     }
 }
+
 // Singleton del controlador de Auth. Me aseguro que no haya mas instancias.
 const authControllerSingleton = new AuthController();
 module.exports = authControllerSingleton;

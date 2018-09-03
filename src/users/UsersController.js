@@ -31,7 +31,7 @@ class UserController extends BaseController {
                         else {
                             return res.status(500).json({
                                 "status": "Error",
-                                "message": "Eror desconocido al intentar agregar el uasuario a la base"
+                                "message": "Eror desconocido al intentar agregar el usuario a la base"
                             });
                         }
                     }

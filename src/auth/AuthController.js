@@ -2,7 +2,7 @@
 // Controlador base definido por la arquitectura de referencia.
 let BaseController = require('../spi/BaseController.js');
 // Definicion de la clase Usuario.
-let User = require('../users/User.js');
+let User = require('../users/UsersModel.js');
 
 /**
  *  Clase controladora de la autenticacion. 
@@ -18,9 +18,10 @@ class AuthController extends BaseController {
             let scope = {};
             // Verifico que el request sea valido.
             if (this.checkPostRequest(req)) {
-                let requestUser = new User(req.body.username,
-                    req.body.password,
-                    req.body.email);
+                let requestUser = new User({
+                    username: req.body.username,
+                    password: req.body.password,
+                    email: req.body.email});
                 // Comienza la cadena de promesas.
                 this.checkUserExistence(requestUser)
                     .then((persistedUser) => {
@@ -76,12 +77,12 @@ class AuthController extends BaseController {
 
     /**
      *  Metodo que checkea si el usuario existe.
-     * @param {User} pUser - Objeto Usuario.
+     * @param {Schema} pUser - Schema moongoose de usuario.
      * @return {Promise} Promesa de chequiar la existencia del usuario.
      */
     checkUserExistence(pUser) {
         return new Promise((promiseSucesfull, promiseFail) => {
-            require('../users/UsersDAO.js').findOne({ 'username': pUser.username }, (err, persistedUser) => {
+            require('../users/UsersModel.js').findOne({ 'username': pUser.username }, (err, persistedUser) => {
                 if (err) {
                     // Hubo un error al tratar de recuperar de la bd el usuario.
                     throw 0;
@@ -151,7 +152,7 @@ class AuthController extends BaseController {
      */
     getAllUsersArray() {
         return new Promise((promiseSucesfull, promiseFail) => {
-            require('../users/UsersDAO.js').getAll((err, users) => {
+            require('../users/UsersModel.js').find({},(err, users) => {
                 if (err) {
                     promiseFail(0);
                 }

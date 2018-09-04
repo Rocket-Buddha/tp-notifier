@@ -1,6 +1,6 @@
 // Imports.
 // Entidad Usuario plana.
-let User = require('../users/User.js');
+let UsersModel = require('../users/UsersModel.js');
 
 /** 
  * Clase de helper para hashing. 
@@ -24,11 +24,13 @@ class Crypt {
     getHashedUserFromRequest(pRequest) {
         // El pass no puede quedar en claro.
         // Instancio el usuario pero con el pass hasheado.
-        return (new User(pRequest.body.username,
-            this.bcrypt.hashSync(pRequest.body.password, this.properties.get('db.crypt.rounds')),
-            pRequest.body.email));
+        return (new UsersModel({
+            username: pRequest.body.username,
+            password: this.bcrypt.hashSync(pRequest.body.password, this.properties.get('db.crypt.rounds')),
+            email: pRequest.body.email
+        }));
     }
-    
+
     /**
      * Metodo para comparar un pass claro contra uno hasheado.
      * @param {String} pPlainPassword - Password claro.
@@ -36,9 +38,9 @@ class Crypt {
      * @param {Function} pCallback - Funcion de callback.
      * @return {Promise} Promesa que devolvera un Boolean por la comparacion de los dos pass.
      */
-    comparePasswords(pPlainPassword, pHashedPassword, pCallback){
-       return this.bcrypt.compare(pPlainPassword, pHashedPassword, pCallback);
-    } 
+    comparePasswords(pPlainPassword, pHashedPassword, pCallback) {
+        return this.bcrypt.compare(pPlainPassword, pHashedPassword, pCallback);
+    }
 }
 
 // Singleton del helper de hasheo, me aseguro que solo haya una instancia.

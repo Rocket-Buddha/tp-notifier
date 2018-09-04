@@ -1,8 +1,8 @@
 //Imports
 // Controlador base definido por la arquitectura de referencia.
 let BaseController = require('../spi/BaseController.js');
-// Definicion de la clase Mensaje.
-let Message = require('../messages/Message.js');
+// Modelo de mensajes.
+let MessagesModel = require('../messages/MessagesModel.js');
 
 /**
  * Clase controladora para el endpoint de mensajes.
@@ -28,7 +28,6 @@ class MessagesController extends BaseController {
                         this.MessagePostedSuccessfully(res);
                     })
                     .catch(err => {
-                        console.log(err);
                         switch (err) {
                             case 0:
                                 this.responseInternalServerError(res);
@@ -52,14 +51,12 @@ class MessagesController extends BaseController {
             // Chequeo el token.
             this.checkToken(this.getTokenFromRequest(req))
                 .then((decode) => {
-                  return this.getAllUserRecivedMessages(decode.username);
+                    return this.getAllUserRecivedMessages(decode.username);
                 })
-                .then((messages)=>{
-                    console.log(messages);
+                .then((messages) => {
                     res.status(200).json(messages);
                 })
                 .catch(err => {
-                    console.log(err);
                     switch (err) {
                         case 0:
                             this.responseInternalServerError(res);
@@ -119,25 +116,26 @@ class MessagesController extends BaseController {
      * Metodo para buildear el mensaje desde un request.
      * @param {Request} pRequest - Request con mensaje.
      * @param {Object} pDecodeToken - Token decodificado.
-     * @return {Message} Objeto mensaje instanciado. 
+     * @return {Schema} Objeto de esquema de mensaje instanciado. 
      */
     buildMessageFromRequest(pRequest, pDecodeToken) {
-        return new Message(pDecodeToken.username,
-            pRequest.body.destinatarios,
-            pRequest.body.mensaje,
-            require('../helpers/Time.js').getTimeString(),
-            false,
-        );
+        return new MessagesModel({
+            sender: pDecodeToken.username,
+            recipients: pRequest.body.destinatarios,
+            message: pRequest.body.mensaje,
+            timestamp: require('../helpers/Time.js').getTimeString(),
+            readed: false
+        });
     }
 
     /**
      * Metodo invocado para persistir un mensaje en base.
-     * @param {Message} pMessage - Objeto menaje que se quiere persistir.
+     * @param {Schema} pMessage - Objeto  de esquema de menaje que se quiere persistir.
      * @return {Promise} Promesa que devuelve el resultado de la operacion de escritura en base.
      */
     saveMessage(pMessage) {
         return new Promise((promiseSucesfull, promiseFail) => {
-            require('./MessagesDAO.js').create(pMessage, (err, res) => {
+            pMessage.save((err, res) => {
                 if (err) {
                     promiseFail(0);
                 }
@@ -164,7 +162,7 @@ class MessagesController extends BaseController {
      */
     getAllUserRecivedMessages(pUsername) {
         return new Promise((promiseSucesfull, promiseFail) => {
-            require('./MessagesDAO.js').find({ 'recipients': { $elemMatch: { username: pUsername } } }
+            require('./MessagesModel.js').find({ 'recipients': { $elemMatch: { username: pUsername } } }
                 , (err, res) => {
                     if (err) {
                         promiseFail(0);

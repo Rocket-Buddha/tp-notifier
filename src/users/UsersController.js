@@ -22,7 +22,7 @@ class UserController extends BaseController {
                 let user = require('../helpers/Crypt').getHashedUserFromRequest(req);
                 // Utilizo el DAO particular del controlador para que lo persista.
                 // No puedo usarlo como atributo por que en este contexto no tiene sentido (En JS, Java lo resulve :( ).
-                require('./UsersDAO').create(user, function (err, user) {
+                user.save(function (err, user) {
                     // Si hay un error.
                     if (err) {
                         // Error de mongo de clave duplicada.

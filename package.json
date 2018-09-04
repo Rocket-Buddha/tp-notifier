@@ -7,14 +7,18 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
-    "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "jasmine": "^3.2.0",
     "jsonwebtoken": "^8.3.0",
     "moment": "^2.22.2",
     "mongoose": "^5.2.10",
     "morgan": "~1.9.0",
     "properties-reader": "0.0.16"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4",
+    "request": "^2.88.0"
   }
 }

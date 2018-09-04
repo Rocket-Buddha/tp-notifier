@@ -140,7 +140,17 @@ class Main {
     debug('Listening on ' + bind);
   }
 
+  /**
+   * Metodo invocado para apagar el servidor.
+   */
+  static serverClose(){
+    this.server.close();
+  }
+
 }
 
 // Linea de entrada del programa ;) . Ver package.json.
 Main.main();
+
+// Export de Main para Jasmine.
+module.exports = Main;

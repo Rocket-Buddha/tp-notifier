@@ -22,6 +22,9 @@ describe("Cuando se usan distintos metodos del endpoint /users.", () => {
     Main.serverClose();
   });
 
+  /**
+   * 
+   */
   describe("Cuando se hace un POST sobre el endpoint /users con un usuario correcto.", () => {
 
     let data = {};
@@ -48,10 +51,34 @@ describe("Cuando se usan distintos metodos del endpoint /users.", () => {
 
     it("Verifica que el status en cuerpo del body se correcto.", () => {
       expect(JSON.parse(data.body).status).toBe("Ok");
+      expect(JSON.parse(data.body).message).toBe("Se ha registrado correctamente");
     });
 
-    it("Verifica que el mensaje en cuerpo del body se correcto.", () => {
-      expect(JSON.parse(data.body).message).toBe("Se ha registrado correctamente");
+    describe("Cuando se crea el usuario en base.", () => {
+
+      let user
+
+      beforeAll((done) => {
+        require('../../src/users/UsersModel').findOne({
+          username: "pepito",
+          email: "pepito@pepe.com"
+        }, (err, res) => {
+          if (err) {
+            throw "No se persistio el usuario."
+          }
+          else {
+            console
+            user = res;
+            done();
+          }
+        });
+      });
+
+      it("Verifica que el usuario persistido coincida con el enviado en el request.", () => {
+        expect(user.username).toBe("pepito");
+        expect(user.email).toBe("pepito@pepe.com");
+      });
+
     });
   });
 });

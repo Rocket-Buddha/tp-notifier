@@ -4,10 +4,26 @@ const USER = {
   username: 'pepito',
   password: '123456',
   email: 'pepito@pepe.com'
-}
+};
 
-const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
+const MESSAGE = {
+  message: "Hola a todos los invito a mi cumple.",
+  recipients: [{
+    username: "pepito"
+  },
+  {
+    username: "Jaime "
+  },
+  {
+    username: "Fiorella"
+  }
+  ]
+};
 
+const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
+const UTC_ISO_REGEX = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]+)?.([0-9][0-9][0-9])(Z)?$/;
+
+const FAKE_TOKEN = 'e1T0kenD3l4Gent3NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlcGl0b28iLCJlbWFpbCI6InBlcGl0b0BwZXBlLmNvbSIsImlhdCI6MTUzNTkyOTI0Nn0.EJEJf0QHj9DTnejNCdUKcvMxhZEbVun4KuFMLCWRflQ'
 
 describe("Cuando se hacen distintas operaciones sobre la API.", () => {
 
@@ -23,6 +39,12 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
     require('../../src/users/UsersModel').deleteMany({}, (err) => {
       if (err) {
         throw "No se pudo borrar todos los usuarios de la colleccion.";
+      }
+    });
+    // Borro todos los mensajes de la coleccion.
+    require('../../src/messages/MessagesModel').deleteMany({}, (err) => {
+      if (err) {
+        throw "No se pudo borrar todos los mensajes de la colleccion.";
       }
     });
   });
@@ -48,12 +70,12 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
       beforeAll((done) => {
         Request.post({
           headers: { 'content-type': 'application/json' },
-          url: 'http://localhost:3000/users',
+          url: TESTING_HOST + '/users',
           body: JSON.stringify({
             // "asername"
-            "asername": "pepito",
-            "password": "123456",
-            "email": "pepito@pepe.com"
+            "asername": USER.username,
+            "password": USER.password,
+            "email": USER.email
           }),
         }, (error, response, body) => {
           data.status = response.statusCode;
@@ -83,11 +105,11 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
       beforeAll((done) => {
         Request.post({
           headers: { 'content-type': 'application/json' },
-          url: 'http://localhost:3000/users',
+          url: TESTING_HOST + '/users',
           body: JSON.stringify({
-            "username": "pepito",
-            "password": "123456",
-            "email": "pepito@pepe.com"
+            "username": USER.username,
+            "password": USER.password,
+            "email": USER.email
           }),
         }, (error, response, body) => {
           data.status = response.statusCode;
@@ -114,8 +136,8 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
 
         beforeAll((done) => {
           require('../../src/users/UsersModel').findOne({
-            username: "pepito",
-            email: "pepito@pepe.com"
+            username: USER.username,
+            email: USER.email
           }, (err, res) => {
             if (err) {
               throw "No se persistio el usuario."
@@ -128,8 +150,8 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
         });
 
         it("Verifica que el usuario persistido coincida con el enviado en el request.", () => {
-          expect(user.username).toBe("pepito");
-          expect(user.email).toBe("pepito@pepe.com");
+          expect(user.username).toBe(USER.username);
+          expect(user.email).toBe(USER.email);
         });
 
       });
@@ -145,11 +167,11 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
       beforeAll((done) => {
         Request.post({
           headers: { 'content-type': 'application/json' },
-          url: 'http://localhost:3000/users',
+          url: TESTING_HOST + '/users',
           body: JSON.stringify({
-            "username": "pepito",
-            "password": "123456",
-            "email": "pepito@pepe.com"
+            "username": USER.username,
+            "password": USER.password,
+            "email": USER.email
           }),
         }, (error, response, body) => {
           data.status = response.statusCode;
@@ -213,9 +235,9 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
      *  Usuario que no existente.
      */
     describe("Con un usuario que no existe.", () => {
-  
+
       let data = {};
-  
+
       beforeAll((done) => {
         Request.post({
           headers: { 'content-type': 'application/json' },
@@ -230,24 +252,24 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
           done();
         });
       });
-  
+
       it("Verifica que el status devuelto sea 401", () => {
         expect(data.status).toBe(401);
       });
-  
+
       it("Verifica que el status en cuerpo del body se correcto.", () => {
         expect(JSON.parse(data.body).status).toBe('Error');
         expect(JSON.parse(data.body).message).toBe('Credenciales invalidas');
-      }); 
+      });
     });
 
-     /**
-     *  Contrasenia incorrecta.
-     */
+    /**
+    *  Contrasenia incorrecta.
+    */
     describe("Con una contrasenia incorrecta.", () => {
-  
+
       let data = {};
-  
+
       beforeAll((done) => {
         Request.post({
           headers: { 'content-type': 'application/json' },
@@ -262,24 +284,24 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
           done();
         });
       });
-  
+
       it("Verifica que el status devuelto sea 401", () => {
         expect(data.status).toBe(401);
       });
-  
+
       it("Verifica que el status en cuerpo del body se correcto.", () => {
         expect(JSON.parse(data.body).status).toBe('Error');
         expect(JSON.parse(data.body).message).toBe('Credenciales invalidas');
-      }); 
+      });
     });
 
     /**
      *  Login correcto.
      */
     describe("Con credenciales correctas.", () => {
-  
+
       let data = {};
-  
+
       beforeAll((done) => {
         Request.post({
           headers: { 'content-type': 'application/json' },
@@ -295,20 +317,231 @@ describe("Cuando se hacen distintas operaciones sobre la API.", () => {
           done();
         });
       });
-  
+
       it("Verifica que el status devuelto sea 200", () => {
         expect(data.status).toBe(200);
       });
-  
+
       it("Verifica que el status en cuerpo del body se correcto.", () => {
         expect(JSON.parse(data.body).token).toMatch(JWT_REGEX);
-        expect(JSON.parse(data.body).users).toEqual(jasmine.any(Array))
+        expect(JSON.parse(data.body).users).toEqual(jasmine.any(Array));
         expect(JSON.parse(data.body).users.includes(USER.username)).toBe(true);
-      }); 
+      });
+    });
+  });
+  // FIN AUTH POST
+
+  /**
+   * Enviar un mensaje.
+   */
+  describe("Cuando se hace un POST sobre /messages para enviar un mensaje.", () => {
+
+    /**
+      * Request invalido.
+      */
+    describe("Con un request invalido.", () => {
+
+      let data = {};
+
+      beforeAll((done) => {
+        Request.post({
+          headers: {
+            'content-type': 'application/json',
+            'x-access-token': token
+          },
+          url: TESTING_HOST + '/messages',
+          body: JSON.stringify({
+            // mensajje
+            "mensajje": MESSAGE.message,
+            "password": MESSAGE.recipients
+          }),
+        }, (error, response, body) => {
+          data.status = response.statusCode;
+          data.body = body;
+          done();
+        });
+      });
+
+      it("Verifica que el status devuelto sea 400", () => {
+        expect(data.status).toBe(400);
+      });
+
+      it("Verifica que el status en cuerpo del body se correcto.", () => {
+        expect(JSON.parse(data.body).status).toBe("Error");
+        expect(JSON.parse(data.body).message).toBe("Request invalido");
+      });
+    });
+
+    /**
+      * Token invalido.
+      */
+    describe("Con un token invalido.", () => {
+
+      let data = {};
+
+      beforeAll((done) => {
+        Request.post({
+          headers: {
+            'content-type': 'application/json',
+            'x-access-token': FAKE_TOKEN
+          },
+          url: TESTING_HOST + '/messages',
+          body: JSON.stringify({
+            "mensaje": MESSAGE.message,
+            "destinatarios": MESSAGE.recipients
+          }),
+        }, (error, response, body) => {
+          data.status = response.statusCode;
+          data.body = body;
+          done();
+        });
+      });
+
+      it("Verifica que el status devuelto sea 401", () => {
+        expect(data.status).toBe(401);
+      });
+
+      it("Verifica que el status en cuerpo del body se correcto.", () => {
+        expect(JSON.parse(data.body).status).toBe("Error");
+        expect(JSON.parse(data.body).message).toBe("Token Invalido");
+      });
+    });
+
+    /**
+      * Mensaje enviado correctamente.
+      */
+    describe("Con token y request valido.", () => {
+
+      let data = {};
+
+      beforeAll((done) => {
+        Request.post({
+          headers: {
+            'content-type': 'application/json',
+            'x-access-token': token
+          },
+          url: TESTING_HOST + '/messages',
+          body: JSON.stringify({
+            "mensaje": MESSAGE.message,
+            "destinatarios": MESSAGE.recipients
+          }),
+        }, (error, response, body) => {
+          data.status = response.statusCode;
+          data.body = body;
+          done();
+        });
+      });
+
+      it("Verifica que el status devuelto sea 200", () => {
+        expect(data.status).toBe(200);
+      });
+
+      it("Verifica que el status en cuerpo del body se correcto.", () => {
+        expect(JSON.parse(data.body).mensaje).toBe("Mensaje posteado con exito");
+      });
+
+      /**
+      * Verificar persistencia en base.
+      */
+      describe("Cuando se crea el mensaje en base.", () => {
+
+        let message
+
+        beforeAll((done) => {
+          require('../../src/messages/MessagesModel').findOne({
+            sender: USER.username,
+            message: MESSAGE.message
+          }, (err, res) => {
+            if (err) {
+              throw "No se persistio el mensaje."
+            }
+            else {
+              message = res;
+              done();
+            }
+          });
+        });
+
+        it("Verifica que el mensaje persistido coincida con el enviado en el request.", () => {
+          expect(message.sender).toBe(USER.username);
+          expect(message.message).toBe(MESSAGE.message);
+        });
+      });
+    });
+  });
+
+  describe("Cuando se hace un GET sobre /messages para ver mensajes.", () => {
+
+    
+
+    /**
+      * Token invalido.
+      */
+     describe("Con un token invalido.", () => {
+
+      let data = {};
+
+      beforeAll((done) => {
+        Request.get({
+          headers: {
+            'content-type': 'application/json',
+            'x-access-token': FAKE_TOKEN
+          },
+          url: TESTING_HOST + '/messages',
+        }, (error, response, body) => {
+          data.status = response.statusCode;
+          data.body = body;
+          done();
+        });
+      });
+
+      it("Verifica que el status devuelto sea 401", () => {
+        expect(data.status).toBe(401);
+      });
+
+      it("Verifica que el status en cuerpo del body se correcto.", () => {
+        expect(JSON.parse(data.body).status).toBe("Error");
+        expect(JSON.parse(data.body).message).toBe("Token Invalido");
+      });
+    });
+
+     /**
+      * Token valido.
+      */
+     describe("Con un token valido.", () => {
+
+      let data = {};
+
+      beforeAll((done) => {
+        Request.get({
+          headers: {
+            'content-type': 'application/json',
+            'x-access-token': token
+          },
+          url: TESTING_HOST + '/messages',
+        }, (error, response, body) => {
+          data.status = response.statusCode;
+          data.body = body;
+          done();
+        });
+      });
+
+      it("Verifica que el status devuelto sea 200", () => {
+        expect(data.status).toBe(200);
+      });
+
+      it("Verifica que el status en cuerpo del body se correcto.", () => {
+        expect(JSON.parse(data.body).status).toBe("Ok");
+        expect(JSON.parse(data.body).totalMensajes).toBe(1);
+        expect(JSON.parse(data.body).mensajesRecibidos).toEqual(jasmine.any(Array));
+        expect(JSON.parse(data.body).mensajesRecibidos[0].remitente).toBe(USER.username);
+        expect(JSON.parse(data.body).mensajesRecibidos[0].mensaje).toBe(MESSAGE.message);
+        expect(JSON.parse(data.body).mensajesRecibidos[0].enviado).toMatch(UTC_ISO_REGEX);
+        expect(JSON.parse(data.body).mensajesRecibidos[0].leido).toBe(false);
+      });
     });
 
   });
-
 });
 
 

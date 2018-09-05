@@ -152,7 +152,7 @@ class MessagesController extends BaseController {
      */
     MessagePostedSuccessfully(pRes) {
         pRes.status(200).json({
-            "Mensaje": "Mensaje posteado con exito"
+            "mensaje": "Mensaje posteado con exito"
         });
     }
 

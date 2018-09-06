@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/core/Main.js"
+    "start": "node ./src/core/Main.js",
+    "test": "node --no-deprecation ./spec/runner/runner.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
@@ -18,6 +19,7 @@
     "properties-reader": "0.0.16"
   },
   "devDependencies": {
+    "jasmine-console-reporter": "^3.1.0",
     "jsdoc": "^3.5.5",
     "nodemon": "^1.18.4",
     "request": "^2.88.0"

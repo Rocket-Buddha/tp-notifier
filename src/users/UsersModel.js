@@ -1,14 +1,17 @@
+const Mongoose = require('mongoose');
+/**
+ * Configuracion particular del modelo y el esquema de usuarios.
+ */
 const usersModelSingleton = require('mongoose')
   .model('users',
-    new require('mongoose').Schema({
+    new Mongoose.Schema({
       username: {
         type: String,
         index: true,
-        unique: true
+        unique: true,
       },
       password: String,
-      email: String
+      email: String,
     }));
-
 // Singleton, evitamos que existan mas instancias del modelo de usuarios.
 module.exports = usersModelSingleton;

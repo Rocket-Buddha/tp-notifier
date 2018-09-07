@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/core/Main.js",
+    "start": "node ./bin/www/ServerManager",
     "test": "node --no-deprecation ./spec/runner/runner.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
+    "body-parser": "^1.18.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
@@ -19,6 +20,9 @@
     "properties-reader": "0.0.16"
   },
   "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "jasmine-console-reporter": "^3.1.0",
     "jsdoc": "^3.5.5",
     "nodemon": "^1.18.4",

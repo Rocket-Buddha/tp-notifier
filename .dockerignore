@@ -1,2 +1,9 @@
 node_modules
 npm-debug.log
+bin/test
+test
+eslintignore
+eslintrc.js
+README.md
+.gitignore
+Dockerfile

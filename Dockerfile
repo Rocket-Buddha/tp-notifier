@@ -1,18 +1,18 @@
-FROM node:10
+FROM node:10.10.0-jessie
 
-# Create app directory
-WORKDIR /usr/src/app
+# Directorio de la aplicacion.
+WORKDIR /opt/tap/tp-notifier-v0.9
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+# Variables de entorno.
+ENV NODE_ENV production
+ENV PORT 8080
 
-RUN npm install
-# If you are building your code for production
-# RUN npm install --only=production
-
-# Bundle app source
+# Copia el contenido del proyecto en el container.
+# Salvo lo que se marco en el .dockerignore.
 COPY . .
-EXPOSE 3000
+
+# Flags para instalacion de librerias solo de prod.
+RUN npm install --only=production
+
+EXPOSE 8080
 CMD [ "npm", "start" ]

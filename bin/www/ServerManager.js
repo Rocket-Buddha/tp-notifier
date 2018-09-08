@@ -3,14 +3,13 @@ const debug = require('debug')('tp-notifier:server');
 const Http = require('http');
 const Main = require('../../src/core/Main');
 
-
 /**
  * Clase estatica de manager del server.
  */
 class ServerManager {
   /**
-  * Metodo run para levantar el servidor.
-  */
+   * Metodo run para levantar el servidor.
+   */
   static run() {
     ServerManager.port = ServerManager.normalizePort(process.env.PORT || '3000');
     ServerManager.main = new Main(ServerManager.port);
@@ -21,10 +20,11 @@ class ServerManager {
   }
 
   /**
-    * Metodo para normalizar el valor del puerto.
-    * @param {Boolean} val  - Valor del puerto.
-    * @return {*} Puede devolver el valor del puerto o false si no fue posible la normalizacion.
-    */
+   * Metodo para normalizar el valor del puerto.
+   * @param {Boolean} val  - Valor del puerto.
+   * @return {Number||Boolean} Puede devolver el valor del puerto
+   * o false si no fue posible la normalizacion.
+   */
   static normalizePort(val) {
     const port = parseInt(val, 10);
     if (Number.isNaN(port)) {
@@ -37,10 +37,10 @@ class ServerManager {
   }
 
   /**
-    * Callback de error al levantar el server.
-    * @param {Error} error
-    * @return {Error} Error mas especifico devuelta.
-    */
+   * Callback de error al levantar el server.
+   * @param {Error} error
+   * @return {Error} Error mas especifico devuelta.
+   */
   static onError(error) {
     if (error.syscall !== 'listen') {
       throw error;
@@ -63,8 +63,8 @@ class ServerManager {
   }
 
   /**
-    * Callback de server levantado.
-    */
+   * Callback de server levantado.
+   */
   static onListening() {
     const addr = ServerManager.myServer.address();
     const bind = typeof addr === 'string'
@@ -74,13 +74,12 @@ class ServerManager {
   }
 
   /**
-    * Metodo invocado para apagar el servidor.
-    */
+   * Metodo invocado para apagar el servidor.
+   */
   static serverClose() {
     ServerManager.myServer.close();
   }
 }
 // Levanta el servidor
 ServerManager.run();
-
 module.exports = ServerManager;

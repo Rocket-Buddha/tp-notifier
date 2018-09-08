@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www/ServerManager",
-    "test": "node --no-deprecation ./spec/runner/runner.js"
+    "test": "node --no-deprecation ./bin/test/api/run.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",

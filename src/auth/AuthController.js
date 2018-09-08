@@ -14,8 +14,8 @@ const UserModel = require('../users/UsersModel');
  */
 class AuthController extends BaseController {
   /**
-     * Implementacion del buildRoutes particular del controlador de de Usuarios.
-     */
+   * Implementacion del buildRoutes particular del controlador de de Usuarios.
+   */
   buildRouter() {
     this.router.post('/', async (req, res) => { AuthController.handlePost(req, res); });
   }
@@ -57,20 +57,20 @@ class AuthController extends BaseController {
   }
 
   /**
-     * Metodo que checkea que el request del login este bien formado.
-     * @param {Object} pRequest  - Request de entrada.
-     * @return {Boolean} Si el request es valido o no.
-     */
+   * Metodo que checkea que el request del login este bien formado.
+   * @param {Object} pRequest  - Request de entrada.
+   * @return {Boolean} Si el request es valido o no.
+   */
   static checkPostRequest(pRequest) {
     return pRequest.body.username
       && pRequest.body.password;
   }
 
   /**
-     *  Metodo que checkea si el usuario existe.
-     * @param {Schema} pUser - Schema moongoose de usuario.
-     * @return {Promise} Promesa de chequiar la existencia del usuario.
-     */
+   *  Metodo que checkea si el usuario existe.
+   * @param {Schema} pUser - Schema moongoose de usuario.
+   * @return {Promise} Promesa de chequiar la existencia del usuario.
+   */
   static async checkUserExistence(pUser) {
     const user = UserModel.findOne({ username: pUser.username });
     if (user) {
@@ -81,11 +81,11 @@ class AuthController extends BaseController {
 
 
   /**
-     * Metodo que verifica que los passwords matcheen.
-     * @param {String} pPassClear - String de password en claro que viene en el request.
-     * @param {String} pPassHashed - String de password hasheado que esta en base.
-     * @return {Promise} Promesa de informar si el password coincide o no.
-     */
+   * Metodo que verifica que los passwords matcheen.
+   * @param {String} pPassClear - String de password en claro que viene en el request.
+   * @param {String} pPassHashed - String de password hasheado que esta en base.
+   * @return {Promise} Promesa de informar si el password coincide o no.
+   */
   static async checkPassword(pPassClear, pPassHashed) {
     const result = await BCrypt.comparePasswords(pPassClear, pPassHashed);
     if (result) {
@@ -95,10 +95,10 @@ class AuthController extends BaseController {
   }
 
   /**
-     * Metodo que genera el token para un usuario determinado.
-     * @param {User} pUser - Objeto usuario para el cual quiero generar el token.
-     * @return {Promise} Promesa de devolver el String del token generado.
-     */
+   * Metodo que genera el token para un usuario determinado.
+   * @param {User} pUser - Objeto usuario para el cual quiero generar el token.
+   * @return {Promise} Promesa de devolver el String del token generado.
+   */
   static async generateToken(pUser) {
     // Genera el token, pasandole el payload.
     return JWT.sign({
@@ -108,9 +108,9 @@ class AuthController extends BaseController {
   }
 
   /**
-     * Metodo para obtener un array con todos los nombres de usuarios de los usuarios.
-     * @return {Promise} Promesa de pasar el array de usuarios.
-     */
+   * Metodo para obtener un array con todos los nombres de usuarios de los usuarios.
+   * @return {Promise} Promesa de pasar el array de usuarios.
+   */
   static async getAllUsersArray() {
     // Traigo los usuarios de la base.
     const dbUsers = await UserModel.find({});

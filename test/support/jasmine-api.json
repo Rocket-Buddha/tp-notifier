@@ -1,0 +1,8 @@
+{
+  "spec_dir": "test",
+  "helpers": [
+    "helpers/api/helper-api.js"
+  ],
+  "stopSpecOnExpectationFailure": true,
+  "random": false
+}

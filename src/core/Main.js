@@ -1,4 +1,3 @@
-
 const express = require('express');
 const Mongoose = require('mongoose');
 const Properties = require('../helpers/Properties.js');

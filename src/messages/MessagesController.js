@@ -12,8 +12,8 @@ const JWT = require('../helpers/JWT');
  */
 class MessagesController extends BaseController {
   /**
-     * Implementacion del buildRoutes particular del controlador de de Usuarios.
-     */
+   * Implementacion del buildRoutes particular del controlador de de Usuarios.
+   */
   buildRouter() {
     // POST
     this.router.post('/', async (req, res) => { await MessagesController.handlePost(req, res); });
@@ -58,11 +58,11 @@ class MessagesController extends BaseController {
   }
 
   /**
-     * Metodo destinado a chequiar que el request del post este bien conformado.
-     * Que exista un mensaje, una lista de destinatarios con al menos un destinatario.
-     * @param {Request} pRequest - Checkea si el request del POST de login es correcto.
-     * @return {Boolean} Retorna si todo los parametros necesarios en el request existen.
-     */
+   * Metodo destinado a chequiar que el request del post este bien conformado.
+   * Que exista un mensaje, una lista de destinatarios con al menos un destinatario.
+   * @param {Request} pRequest - Checkea si el request del POST de login es correcto.
+   * @return {Boolean} Retorna si todo los parametros necesarios en el request existen.
+   */
   static checkPostRequest(pRequest) {
     return pRequest.body.mensaje
       && pRequest.body.destinatarios
@@ -70,10 +70,10 @@ class MessagesController extends BaseController {
   }
 
   /**
-     * Obtiene el token desde el request.
-     * @param {Request} pReq - Request de post de login.
-     * @return {String} String del token que viene en el header del request.
-     */
+   * Obtiene el token desde el request.
+   * @param {Request} pReq - Request de post de login.
+   * @return {String} String del token que viene en el header del request.
+   */
   static getTokenFromRequest(pReq) {
     // return pReq.query.token;
     // return pReq.body.token;
@@ -81,21 +81,21 @@ class MessagesController extends BaseController {
   }
 
   /**
-     * Metodo para validar que el Token sea valido.
-     * @param {String} pToken - Stringo con el Token enviado en el request.
-     * @return {Prommise} Promesa de devuelve el Token decencriptado,
-     * o sea el payload cuando finaliza.
-     */
+   * Metodo para validar que el Token sea valido.
+   * @param {String} pToken - Stringo con el Token enviado en el request.
+   * @return {Prommise} Promesa de devuelve el Token decencriptado,
+   * o sea el payload cuando finaliza.
+   */
   static async checkToken(pToken) {
     return JWT.verify(pToken);
   }
 
   /**
-     * Metodo para buildear el mensaje desde un request.
-     * @param {Request} pRequest - Request con mensaje.
-     * @param {Object} pDecodeToken - Token decodificado.
-     * @return {Schema} Objeto de esquema de mensaje instanciado.
-     */
+   * Metodo para buildear el mensaje desde un request.
+   * @param {Request} pRequest - Request con mensaje.
+   * @param {Object} pDecodeToken - Token decodificado.
+   * @return {Schema} Objeto de esquema de mensaje instanciado.
+   */
   static buildMessageFromRequest(pRequest, pDecodeToken) {
     return new MessagesModel({
       sender: pDecodeToken.username,
@@ -107,18 +107,18 @@ class MessagesController extends BaseController {
   }
 
   /**
-     * Metodo invocado para persistir un mensaje en base.
-     * @param {Schema} pMessage - Objeto  de esquema de menaje que se quiere persistir.
-     * @return {Promise} Promesa que devuelve el resultado de la operacion de escritura en base.
-     */
+   * Metodo invocado para persistir un mensaje en base.
+   * @param {Schema} pMessage - Objeto  de esquema de menaje que se quiere persistir.
+   * @return {Promise} Promesa que devuelve el resultado de la operacion de escritura en base.
+   */
   static async saveMessage(pMessage) {
     return pMessage.save();
   }
 
   /**
-     * Metodo invocado para contestar que el mensaje fue posteado con exito.
-     * @param {Response} pRes - Response que el metodo utilizara para contestar.
-     */
+   * Metodo invocado para contestar que el mensaje fue posteado con exito.
+   * @param {Response} pRes - Response que el metodo utilizara para contestar.
+   */
   static MessagePostedSuccessfully(pRes) {
     pRes.status(200).json({
       mensaje: 'Mensaje posteado con exito',
@@ -126,9 +126,9 @@ class MessagesController extends BaseController {
   }
 
   /**
-     * Metodo que devuelve todos los mensajes que recibio el usuario.
-     * @param {String} pUsername
-     */
+   * Metodo que devuelve todos los mensajes que recibio el usuario.
+   * @param {String} pUsername
+   */
   static async getAllUserRecivedMessages(pUsername) {
     const messages = await MessagesModel.find({
       recipients:
@@ -186,9 +186,9 @@ class MessagesController extends BaseController {
   }
 
   /**
-     * Metodo invocado para contestar con los mensajes del usuario.
-     * @param {Response} pRes - Response que el metodo utilizara para contestar.
-     */
+   * Metodo invocado para contestar con los mensajes del usuario.
+   * @param {Response} pRes - Response que el metodo utilizara para contestar.
+   */
   static MessageGetSuccessfully(pRes, messages) {
     pRes.status(200).json(messages);
   }

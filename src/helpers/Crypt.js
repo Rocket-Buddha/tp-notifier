@@ -24,12 +24,12 @@ class Crypt {
   }
 
   /**
-     * Metodo para comparar un pass claro contra uno hasheado.
-     * @param {String} pPlainPassword - Password claro.
-     * @param {String} pHashedPassword - Password hasheado.
-     * @param {Function} pCallback - Funcion de callback.
-     * @return {Promise} Promesa que devolvera un Boolean por la comparacion de los dos pass.
-    */
+   * Metodo para comparar un pass claro contra uno hasheado.
+   * @param {String} pPlainPassword - Password claro.
+   * @param {String} pHashedPassword - Password hasheado.
+   * @param {Function} pCallback - Funcion de callback.
+   * @return {Promise} Promesa que devolvera un Boolean por la comparacion de los dos pass.
+   */
   static async comparePasswords(pPlainPassword, pHashedPassword) {
     return BCrypt.compare(pPlainPassword, pHashedPassword);
   }

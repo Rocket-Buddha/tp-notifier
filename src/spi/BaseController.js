@@ -29,9 +29,9 @@ class BaseController {
   }
 
   /**
-     * Metodo para responder que el request enviado es invalido.
-     * @param {Response} pRes - Response que utilizara para contestar al cliente.
-     */
+   * Metodo para responder que el request enviado es invalido.
+   * @param {Response} pRes - Response que utilizara para contestar al cliente.
+   */
   static responseBadRequest(pRes) {
     pRes.status(400).json({
       status: 'Error',
@@ -40,9 +40,9 @@ class BaseController {
   }
 
   /**
-     * Metodo para responder que el token suministrado no es valido.
-     * @param {Response} pRes - Response que utilizara para contestar al cliente.
-     */
+   * Metodo para responder que el token suministrado no es valido.
+   * @param {Response} pRes - Response que utilizara para contestar al cliente.
+   */
   static responseInvalidToken(pRes) {
     pRes.status(401).json({
       status: 'Error',
@@ -51,9 +51,9 @@ class BaseController {
   }
 
   /**
-     * Metodo para contestar que hubo un eeror interno sel servidor.
-     * @param {Response} pRes - Response que utilizara para contestar al cliente.
-     */
+   * Metodo para contestar que hubo un eeror interno sel servidor.
+   * @param {Response} pRes - Response que utilizara para contestar al cliente.
+   */
   static responseInternalServerError(pRes) {
     pRes.status(500).json({
       status: 'Error',
@@ -62,9 +62,9 @@ class BaseController {
   }
 
   /**
-     * Metodo para contestar que las credenciales suministradas no son validas.
-     * @param {Response} pRes - Response que utilizara para contestar al cliente.
-     */
+   * Metodo para contestar que las credenciales suministradas no son validas.
+   * @param {Response} pRes - Response que utilizara para contestar al cliente.
+   */
   static responseInvalidCredentials(pRes) {
     pRes.status(401).json({
       status: 'Error',
@@ -72,6 +72,5 @@ class BaseController {
     });
   }
 }
-
 // Definicion de la clase BaseController.
 module.exports = BaseController;

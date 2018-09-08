@@ -5,9 +5,9 @@ const Moment = require('moment');
  */
 class Time {
   /**
-     * Metodo que devuelve la hora actual en formato ISO UTC.
-     * @return {String} Fecha y hora actual formateada en formato ISO UTC.
-     */
+   * Metodo que devuelve la hora actual en formato ISO UTC.
+   * @return {String} Fecha y hora actual formateada en formato ISO UTC.
+   */
   static getTimeString() {
     return Moment().toISOString();
   }

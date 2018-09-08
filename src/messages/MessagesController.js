@@ -6,6 +6,8 @@ const MessagesModel = require('../messages/MessagesModel');
 const Time = require('../helpers/Time');
 // Helper de Json web tokens.
 const JWT = require('../helpers/JWT');
+// Definiciones de errores.
+const EXCEPTIONS = require('../helpers/CustomExceptions');
 
 /**
  * Clase controladora para el endpoint de mensajes.
@@ -48,7 +50,7 @@ class MessagesController extends BaseController {
     } catch (err) {
       switch (err.code) {
         // Codigo de error de JWT No valido.
-        case 1:
+        case EXCEPTIONS.JWT_VALIDATION_ERROR.code:
           MessagesController.responseInvalidToken(res);
           break;
         default:// Error interno generico.
@@ -176,7 +178,7 @@ class MessagesController extends BaseController {
     } catch (err) {
       switch (err.code) {
         // Codigo de error de JWT No valido.
-        case 1:
+        case EXCEPTIONS.JWT_VALIDATION_ERROR.code:
           MessagesController.responseInvalidToken(res);
           break;
         default:// Error interno generico.

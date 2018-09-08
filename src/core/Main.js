@@ -1,5 +1,6 @@
 const express = require('express');
 const Mongoose = require('mongoose');
+const helmet = require('helmet');
 const Properties = require('../helpers/Properties.js');
 const UserControllerSingleton = require('../users/UsersController');
 const AuthControllerSingleton = require('../auth/AuthController.js');
@@ -24,6 +25,8 @@ class Main {
    */
   setupApp(pPort) {
     this.app = express();
+    // Helmet por seguridad.
+    this.app.use(helmet());
     // Puerto.
     this.app.set('port', pPort);
   }

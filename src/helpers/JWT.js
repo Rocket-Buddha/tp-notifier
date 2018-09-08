@@ -1,5 +1,5 @@
 const JsonWebToken = require('jsonwebtoken');
-const EXCEPTIONS_PAYLOADS = require('./ExceptionPayloads');
+const EXCEPTIONS = require('./CustomExceptions');
 const Properties = require('./Properties');
 
 /**
@@ -31,7 +31,7 @@ class JWT {
       // Secreto externalizado en properties.
         Properties.get('jwt.token.secret'));
     } catch (err) {
-      throw EXCEPTIONS_PAYLOADS.JWT_VALIDATION_ERROR_PAYLOAD;
+      throw EXCEPTIONS.JWT_VALIDATION_ERROR;
     }
   }
 }

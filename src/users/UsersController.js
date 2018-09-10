@@ -23,7 +23,7 @@ class UserController extends BaseController {
   static async handlePost(req, res) {
     try {
       // Logging request.
-      Logguer.logRequestInfo('/users', 'POST', req);
+      Logguer.logRequestInfo(res.get('correlationalId'), '/users', 'POST', req);
       // Verifico que el request tenga todo lo que necesito.
       if (UserController.checkPostRequest(req)) {
         // Creo el usuario con el pass hesheado.
@@ -33,18 +33,18 @@ class UserController extends BaseController {
         // Respondo que el post fue satisfactorio.
         UserController.responsePostsuccessfully(res);
       } else { // Si el request esta mal formado,
-        UserController.responseBadRequest(res);
+        UserController.responseBadRequest("/users", "POST",res);
       }
     } catch (err) {
-      // Logueo el error.
-      Logguer.logEndpointError('/users', 'POST', req.headers.cId, err);
       switch (err.code) {
         // Codigo de error de mongo de clave duplicada.
         case 11000:
           UserController.responseDuplicateUser(res);
           break;
         default:
-          UserController.responseInternalServerError(res);
+          // Logueo el error.
+          Logguer.logEndpointError(res.get('correlationalId'), '/users', 'POST', err);
+          UserController.responseInternalServerError("/users", "POST",res);
       }
     }
   }
@@ -64,10 +64,12 @@ class UserController extends BaseController {
    * @param {Response} pRes - Response necesario para poder contestar.
    */
   static responseDuplicateUser(pRes) {
-    pRes.status(400).json({
+    const anwser = {
       status: 'Error',
       message: 'Usuario duplicado',
-    });
+    }
+    Logguer.logResponseInfo(pRes.get('correlationalId'), "/users", "POST", anwser);
+    pRes.status(400).json(anwser);
   }
 
   /**
@@ -75,10 +77,12 @@ class UserController extends BaseController {
    * @param {Response} pRes - Response necesario para poder contestar.
    */
   static responsePostsuccessfully(pRes) {
-    pRes.status(200).json({
+    const anwser = {
       status: 'Ok',
       message: 'Se ha registrado correctamente',
-    });
+    }
+    Logguer.logResponseInfo(pRes.get('correlationalId'), "/authenticate", "POST", anwser);
+    pRes.status(200).json(anwser);
   }
 }
 // Singleton del controlador de Usuarios. Me aseguro que no haya mas instancias.

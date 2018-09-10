@@ -18,7 +18,9 @@ describe('Cuando se hace un post sobre /users para registrar un usuario.', () =>
 
     beforeAll((done) => {
       Request.post({
-        headers: { 'content-type': 'application/json' },
+        headers: {
+          'content-type': 'application/json',
+        },
         url: `${SHARED.TESTING_HOST}/users`,
         body: JSON.stringify({
           // "asername"
@@ -26,7 +28,8 @@ describe('Cuando se hace un post sobre /users para registrar un usuario.', () =>
           password: SHARED.USER.password,
           email: SHARED.USER.email,
         }),
-      }, (error, response, body) => {
+      }, (error, response, body) => { 
+        SHARED.correlationalId = response.headers['correlationalid'];
         data.status = response.statusCode;
         data.body = body;
         done();
@@ -51,7 +54,10 @@ describe('Cuando se hace un post sobre /users para registrar un usuario.', () =>
 
     beforeAll((done) => {
       Request.post({
-        headers: { 'content-type': 'application/json' },
+        headers: {
+          'content-type': 'application/json',
+          'correlational-id': SHARED.correlationalId,
+        },
         url: `${SHARED.TESTING_HOST}/users`,
         body: JSON.stringify({
           username: SHARED.USER.username,
@@ -109,7 +115,10 @@ describe('Cuando se hace un post sobre /users para registrar un usuario.', () =>
 
     beforeAll((done) => {
       Request.post({
-        headers: { 'content-type': 'application/json' },
+        headers: {
+          'content-type': 'application/json',
+          'correlational-id': SHARED.correlationalId,
+        },
         url: `${SHARED.TESTING_HOST}/users`,
         body: JSON.stringify({
           username: SHARED.USER.username,

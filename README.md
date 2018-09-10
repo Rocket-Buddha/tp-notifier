@@ -18,6 +18,8 @@ git clone https://github.com/Rocket-Buddha/tp-notifier.git
 cd tp-notifier
 ```
 
+Inyecta tus properties de produccion en tp-notifier/env/app.properties.
+
 Para buildear en el contenedor, parado en el root del proyecto.
 
 ```bash

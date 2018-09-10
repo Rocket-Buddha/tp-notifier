@@ -9,7 +9,7 @@ const MessagesModel = require('../../src/messages/MessagesModel');
  * Enviar un mensaje.
  */
 describe('Cuando se hace un POST sobre /messages para enviar un mensaje.', () => {
-  
+
   /**
    * Request invalido.
    */
@@ -21,6 +21,7 @@ describe('Cuando se hace un POST sobre /messages para enviar un mensaje.', () =>
         headers: {
           'content-type': 'application/json',
           'x-access-token': SHARED.token,
+          'correlational-id': SHARED.correlationalId,
         },
         url: `${SHARED.TESTING_HOST}/messages`,
         body: JSON.stringify({
@@ -56,6 +57,7 @@ describe('Cuando se hace un POST sobre /messages para enviar un mensaje.', () =>
         headers: {
           'content-type': 'application/json',
           'x-access-token': SHARED.FAKE_TOKEN,
+          'correlational-id': SHARED.correlationalId,
         },
         url: `${SHARED.TESTING_HOST}/messages`,
         body: JSON.stringify({
@@ -90,6 +92,7 @@ describe('Cuando se hace un POST sobre /messages para enviar un mensaje.', () =>
         headers: {
           'content-type': 'application/json',
           'x-access-token': SHARED.token,
+          'correlational-id': SHARED.correlationalId,
         },
         url: `${SHARED.TESTING_HOST}/messages`,
         body: JSON.stringify({
@@ -152,6 +155,7 @@ describe('Cuando se hace un GET sobre /messages para ver mensajes.', () => {
         headers: {
           'content-type': 'application/json',
           'x-access-token': SHARED.FAKE_TOKEN,
+          'correlational-id': SHARED.correlationalId,
         },
         url: `${SHARED.TESTING_HOST}/messages`,
       }, (error, response, body) => {
@@ -182,6 +186,7 @@ describe('Cuando se hace un GET sobre /messages para ver mensajes.', () => {
         headers: {
           'content-type': 'application/json',
           'x-access-token': SHARED.token,
+          'correlational-id': SHARED.correlationalId,
         },
         url: `${SHARED.TESTING_HOST}/messages`,
       }, (error, response, body) => {

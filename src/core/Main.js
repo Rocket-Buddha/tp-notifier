@@ -53,12 +53,11 @@ class Main {
    * @param {Function} next - Funcion que llama a la siguiente funcion middleware.
    */
   static addTransactionUniqueId(req, res, next) {
-    if (req.headers.cId) {
-      res.set('cId', req.headers.cId);
+    if (req.headers['correlational-id']) {
+      res.set('correlationalId', req.headers['correlational-id']);
+    } else{
+      res.set('correlationalId', uuidv1());
     }
-    const cId = uuidv1();
-    req.headers.cId = cId;
-    res.set('cId', cId);
     next();
   }
 
@@ -93,13 +92,13 @@ class Main {
     // Retorno el string armado.
     return `mongodb://${
       Properties.get('db.mongo.user')
-    }:${
+      }:${
       Properties.get('db.mongo.pass')
-    }@${
+      }@${
       Properties.get('db.mongo.host')
-    }:${
+      }:${
       Properties.get('db.mongo.port')
-    }/${
+      }/${
       Properties.get('db.mongo.schema')}`;
   }
 }

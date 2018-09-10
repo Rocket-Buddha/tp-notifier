@@ -30,7 +30,7 @@ class AuthController extends BaseController {
   static async handlePost(req, res) {
     try {
       // Logging request.
-      Logguer.logRequestInfo('/authenticate', 'POST', req);
+      Logguer.logRequestInfo(res.get('correlationalId'), '/authenticate', 'POST', req);
       // Verifico que el request sea valido.
       if (AuthController.checkPostRequest(req)) {
         // Armo el usuario que vino en el request.
@@ -50,15 +50,15 @@ class AuthController extends BaseController {
           // Respondo satisfactoriamente.
           AuthController.responsePostsuccessfully(res, token, usernamesArray);
         } else {
-          AuthController.responseInvalidCredentials(res);
+          AuthController.responseInvalidCredentials("/authenticate", "POST", res);
         }
       } else { // Si el request no esta bien formado respondo que el request es invalido.
-        AuthController.responseBadRequest(res);
+        AuthController.responseBadRequest("/authenticate", "POST", res);
       }
     } catch (err) {
       // Logueo el error.
-      Logguer.logEndpointError('/authenticate', 'POST', req.headers.cId, err);
-      AuthController.responseInternalServerError(res);
+      Logguer.logEndpointError(res.get('correlationalId'), '/authenticate', 'POST', err);
+      AuthController.responseInternalServerError("/authenticate", "POST", res);
     }
   }
 
@@ -135,10 +135,19 @@ class AuthController extends BaseController {
    * @param {Response} pRes - Response necesario para poder contestar.
    */
   static responsePostsuccessfully(pRes, pToken, usernamesArray) {
-    pRes.status(200).json({
-      token: pToken,
-      users: usernamesArray,
-    });
+    try {
+      Logguer.logResponseInfo(pRes.get('correlationalId'), "/authenticate", "POST", {
+        token: 'CENSORED',
+        users: usernamesArray,
+      });
+    }catch(err){
+      console.log(err);
+    } finally{
+      pRes.status(200).json({
+        token: pToken,
+        users: usernamesArray,
+      });
+    } 
   }
 }
 

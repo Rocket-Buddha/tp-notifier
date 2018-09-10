@@ -1,10 +1,12 @@
-const express = require('express');
-const Mongoose = require('mongoose');
+const fs = require('fs');
 const helmet = require('helmet');
+const express = require('express');
+const uuidv1 = require('uuid/v1');
+const Mongoose = require('mongoose');
 const Properties = require('../helpers/Properties.js');
 const UserControllerSingleton = require('../users/UsersController');
-const AuthControllerSingleton = require('../auth/AuthController.js');
-const MessagesControllerSingleton = require('../messages/MessagesController.js');
+const AuthControllerSingleton = require('../auth/AuthController');
+const MessagesControllerSingleton = require('../messages/MessagesController');
 
 /**
  * Clase Main para punto de entrada de la aplicacion.
@@ -15,9 +17,19 @@ class Main {
    * @param {Number} pPort - Puerto con el que se configurara la app.
    */
   constructor(pPort) {
+    Main.setupLogFolder();
     this.setupApp(pPort);
     this.setupEndPoints();
     Main.setupDB();
+  }
+
+  /**
+   * Metodo que crea la carpeta de logging si esta no existe.
+   */
+  static setupLogFolder() {
+    if (!fs.existsSync(Properties.get('logging.path'))) {
+      fs.mkdirSync(Properties.get('logging.path'));
+    }
   }
 
   /**
@@ -25,10 +37,29 @@ class Main {
    */
   setupApp(pPort) {
     this.app = express();
+    // El segundo middleware que se ejecuta es el que setea el TUId.
+    this.app.use((req, res, next) => { Main.addTransactionUniqueId(req, res, next); });
     // Helmet por seguridad.
     this.app.use(helmet());
     // Puerto.
     this.app.set('port', pPort);
+  }
+
+  /**
+   * Metodo encargado de establecer un correlational id.
+   * No se usa httpContext de express por que pierde el contextos en ciertos callbacks.
+   * @param {Request} req - Request de entrada.
+   * @param {Response} res - Response de salida.
+   * @param {Function} next - Funcion que llama a la siguiente funcion middleware.
+   */
+  static addTransactionUniqueId(req, res, next) {
+    if (req.headers.cId) {
+      res.set('cId', req.headers.cId);
+    }
+    const cId = uuidv1();
+    req.headers.cId = cId;
+    res.set('cId', cId);
+    next();
   }
 
   /**

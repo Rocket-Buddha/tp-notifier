@@ -1,6 +1,7 @@
 // Controlador base definido por la arquitectura de referencia.
 const BaseController = require('../spi/BaseController');
 const BCrypt = require('../helpers/Crypt');
+const Logguer = require('../helpers/Logguer');
 
 /**
  * Clase de controllador de usuarios.
@@ -21,6 +22,8 @@ class UserController extends BaseController {
    */
   static async handlePost(req, res) {
     try {
+      // Logging request.
+      Logguer.logRequestInfo('/users', 'POST', req);
       // Verifico que el request tenga todo lo que necesito.
       if (UserController.checkPostRequest(req)) {
         // Creo el usuario con el pass hesheado.
@@ -33,6 +36,8 @@ class UserController extends BaseController {
         UserController.responseBadRequest(res);
       }
     } catch (err) {
+      // Logueo el error.
+      Logguer.logEndpointError('/users', 'POST', req.headers.cId, err);
       switch (err.code) {
         // Codigo de error de mongo de clave duplicada.
         case 11000:

@@ -8,6 +8,8 @@ const BaseController = require('../spi/BaseController');
 const User = require('../users/UsersModel');
 // Modelo de usuarios.
 const UserModel = require('../users/UsersModel');
+// Helper de loggin.
+const Logguer = require('../helpers/Logguer');
 
 /**
  *  Clase controladora de la autenticacion.
@@ -27,6 +29,8 @@ class AuthController extends BaseController {
    */
   static async handlePost(req, res) {
     try {
+      // Logging request.
+      Logguer.logRequestInfo('/authenticate', 'POST', req);
       // Verifico que el request sea valido.
       if (AuthController.checkPostRequest(req)) {
         // Armo el usuario que vino en el request.
@@ -52,6 +56,8 @@ class AuthController extends BaseController {
         AuthController.responseBadRequest(res);
       }
     } catch (err) {
+      // Logueo el error.
+      Logguer.logEndpointError('/authenticate', 'POST', req.headers.cId, err);
       AuthController.responseInternalServerError(res);
     }
   }

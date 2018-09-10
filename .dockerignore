@@ -7,3 +7,4 @@ eslintrc.js
 README.md
 .gitignore
 Dockerfile
+logs

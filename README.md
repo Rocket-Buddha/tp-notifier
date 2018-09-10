@@ -28,13 +28,13 @@ Una vez generado hay que levantarlo. Podes configurar el puerto que quieras depe
 En este ejemplo todos las conexiones entrantes al puerto 49568 se fowardiaran al puerto 8080 del contenedor, en donde corre la app.
 
 ```bash
-docker run --security-opt apparmor:unconfined -p 49568:3000 -d tap/tp-notifier
+docker run --security-opt apparmor:unconfined -p 49568:8080 -d tap/tp-notifier
 ```
 
 Para ambientes productivos es mas recomendable:
 
 ```bash
-docker run -p 49568:3000 -d tap/tp-notifier
+docker run -p 49568:8080 -d tap/tp-notifier
 ```
 
 ### Helpers

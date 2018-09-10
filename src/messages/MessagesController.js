@@ -6,6 +6,8 @@ const MessagesModel = require('../messages/MessagesModel');
 const Time = require('../helpers/Time');
 // Helper de Json web tokens.
 const JWT = require('../helpers/JWT');
+// Helper de loggin.
+const Logguer = require('../helpers/Logguer');
 // Definiciones de errores.
 const EXCEPTIONS = require('../helpers/CustomExceptions');
 
@@ -30,6 +32,8 @@ class MessagesController extends BaseController {
    */
   static async handlePost(req, res) {
     try {
+      // Logging request.
+      Logguer.logRequestInfo('/messages', 'POST', req);
       // Verificar que el request este bien conformado.
       if (MessagesController.checkPostRequest(req)) {
         const token = MessagesController.getTokenFromRequest(req);
@@ -48,6 +52,8 @@ class MessagesController extends BaseController {
         MessagesController.responseBadRequest(res);
       }
     } catch (err) {
+      // Logueo el error.
+      Logguer.logEndpointError('/messages', 'POST', req.headers.cId, err);
       switch (err.code) {
         // Codigo de error de JWT No valido.
         case EXCEPTIONS.JWT_VALIDATION_ERROR.code:
@@ -163,6 +169,8 @@ class MessagesController extends BaseController {
    */
   static async handleGet(req, res) {
     try {
+      // Logging request.
+      Logguer.logRequestInfo('/messages', 'GET', req);
       // Obtengo el token del header.
       const token = MessagesController.getTokenFromRequest(req);
       // Verificar que el token sea correcto.
@@ -176,6 +184,8 @@ class MessagesController extends BaseController {
         MessagesController.responseInvalidToken(res);
       }
     } catch (err) {
+      // Logueo el error.
+      Logguer.logEndpointError('/messages', 'GET', req.headers.cId, err);
       switch (err.code) {
         // Codigo de error de JWT No valido.
         case EXCEPTIONS.JWT_VALIDATION_ERROR.code:

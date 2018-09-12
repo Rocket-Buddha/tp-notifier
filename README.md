@@ -126,6 +126,7 @@ Los tildados son los que vienen activados por defecto.
 Ademas de por ser requisito del TP :P.
 
 ###### Guardar datos en los JWT
+
 Con un enfoque basado en cookies, simplemente guardamos el identificador de sesión.
 
 Los tokens por otro lado nos permiten guardar cualquier tipo de metadata, siempre que se trate de un JSON válido.
@@ -153,26 +154,118 @@ Las plataformas móviles nativas y las cookies no operan muy bien en conjunto, y
 Los tokens, por otro lado, son mucho más fáciles de implementar (tanto en iOS como en Android). También son más fáciles de implementar para aplicaciones y servicios de Internet of Things (que no incorporan el concepto de gestión de cookies).
 
 
-
 ##### ¿Por que elegimos la libreria jsonwebtoken ?
 
 Por ser la libreria mas ampliamente utilizada para este proposito en el contexto de NodeJS, lo que implica cierto grado de maduracion.
 
 #### Moment
 
+##### ¿Por que usar una libreria para formateo de fechas?
+Encapsulando los distintos formateos que necesitemos a los largo de la aplicacion en un helper de fechas nos aseguramos de que los programadores accederan a los formatos correctos, por otro lado utilizando una libreria probada para esto nos aseguramos de no reinventar la rueda y acceder a un producto probado con un grado de maduracion elevado.
+
+#### ¿Por que elegimos Moment?
+Por se runa libreria liviana, madura y altamente extendida.
+
 #### Properties Reader
+
+##### ¿Por que usar properties externas?
+Para tener la ventaja de poder modificar algo que puede variar sin tener que tocar distintos archivos del codigo fuente y recargar o recomipilar la aplicacion.
+
+Esto es especialmente util para inyectar distintas configuraciones correspondientes a distintos eviroments lease, dev, testing, staging, prod.
+
+##### ¿Por que elegimos COMPLETAR?
+COMPLETAR
 
 #### Winston
 
-#### UUID
+##### ¿Por que logguear?
+Los logs son importantes en distintos momentos. A nivel preventivo se puede llegar a preever errores evaluando la saludo de nuestra aplicacion mediante el monitoreo, tomando acciones correctivas para que este no suceda. Cuando el error ya sucedio, es importante contar con un log que nos permita trazar con facilidad el error con un identificador correlaccional para poder entender por que sucede y coregirlo.
+Por otro lado, logs del sistema tambien pueden servir para auditar los datos enviados y recibidos entre subsistemas de manera tal de resolver una discrepancia y ver quien esta equivocado.
+
+##### ¿Por que elegimos Winston Logguer?
+Winston logguer es un logguer anincronico, lo cual es bastante deseable ya que no bloquea el unico hilo de NodeJS, es multi transporte, de manera tal que podemos configurar varias formas de output, ya se por consola, archivo, o incluso bajar un transporte para Winston desarrollado por un tercero (ej: integracion con ELK mediante transporte para Logstash) mediante yarn o npm, ademas de ques extremadamente configurable en cuestiones de formato.
+
+Por las razones antes mencionadas se ha convertido en el logguer estandar para NodeJS, lo que implica que ha tenido un grado de maduracion alto, esta ampliamente extendido y testeado.
+
+###### UUID
+Implementamos la libreria UUID para generar un identificador de coorrelaccion, a partir de un current timestamp, entre logs para poder trazarlos con facilidad.
 
 #### Eslint con estilo Airbnb
 
+##### ¿Por que debemos usar un linter?
+
+Un linter es un software que asiste al programador en fundamentalmente 2 objetivos:
+  * Evitar haga algo en su codigo que sea considerado bad practice y mejor aun que implemente las best practices.
+  * Asistirlo para que su codigo siga la linea de estilo definida por el equipo y/o compañia en general.
+
+##### ¿Por que esto me beneficia?
+
+* Aplicar best practices en tu codigo hace que este sea menos propenso a errores y/o problemas relacionados con la calidad del producto final, como por ejemplo detrimentos de performance o agujeros de seguridad.
+
+* Seguir una guia de estilo nos permite escribir codigo mas homogeneo con el resto del equipo y/o compañia de forma tal que la curva de entendimiento de este es menor, lo que facilita el mantenimiento haciendo que cualquier programador pueda mantener codigo de otro programador.
+
 #### Jasmine
 
-#### Request
+##### ¿Por que necesitamos testing automatizado?
+
+El testing automatizado es uno de los pilares fundamentales del concepto de integracion continua que a su vez es uno de lo spilares fundamentales de la filosofia DevOps.
+
+Es necesario implementar distintos niveles de testing automatizado par poder evaluar a esos niveles, constantemente y sin esfuerzo la saludos del codigo que se pretende integrar. Algunos de estos niveles son:
+
+* Test unitario a nivel de clase.
+* Test de API E2E, end to end.
+* Test de interfaces de usuario, mayormente conocido como "funcional".
+
+##### ¿Por que elegimos Jasmine?
+
+Siendo que el TP es una API nosotros necesitabamos hacer test unitario y de API. Jasmine cumple con estos 2 propositos perfectamente.
+
+Lo elegimos particularmente por sobre otros por ser liviano y altamente extendido, lo que implica maduracion ademas de que es una suit completa en contraposicion al otro mas popular que es Mocha, quien necesita chai para completar la funcionalidad que se esperaria de un framework de test automatizado. 
+
+##### Request
+Request es una libreria ampliamente extendida para ejecutar request http la cual usamos para ejecutar request desde los test de API.
 
 #### JSDoc
+
+##### ¿Por que documentar y/o comentar el codigo?
+
+Las ventajas de esto son claras y bien conocidas y hacen a la facilidad de mantenimiento de un producto a los largo de todo su ciclo de vida.
+
+##### ¿Por que elegimos JSDoc?
+
+Por ser el estandar de JS para documentar el codigo ademas que existen herramientas como la elegida jsdoc para sacar reportes de manera automatica a partir del parseo de este formato en el codigo.
+
+#### PM2
+
+##### ¿Por que usar un administrador de processos?
+
+El problema del single thread de NodeJS. entro otras ventajas de deploy y gestion.
+
+##### ¿Por que elegimos PM2?
+
+###### Forever Alivelink
+Once started, your app is forever alive, auto-restarting across crashes and machine restarts.
+
+###### Process Managementlink
+All your applications are run in the background and can be easily managed.
+
+###### Log Managementlink
+Application logs are saved in the hard disk of your servers into ~/.pm2/logs/.
+Access your realtime logs with.
+
+###### Zero-config Load-Balancerlink / clusterizacion de instancias
+PM2 can scale up your application by creating several child processes that share the same server port. Doing this also allow you to restart your app with zero-seconds downtimes.
+
+###### Logging management
+Manejo de loggins basicos entre instancias.
+
+###### Easy deploy with SSHlink
+Automate your deployment and avoid to ssh in all your servers one by one.
+0 downtime deploy
+greceful deploy
+
+###### Monitoreo
+You can monitor your app in the terminal and check app health (CPU usage, memory used, request/min and more).s
 
 #### Docker
 
@@ -181,6 +274,14 @@ Por ser la libreria mas ampliamente utilizada para este proposito en el contexto
 - Apps are easy to share with all their dependencies.
 
 ## Testing
+
+Parado en el root del proyecto ejecuta:
+
+```bash
+npm test
+```
+
+El comando ejecutara todos los test del la aplicacion y mostrara en la consola un reporte con todos los casos probados y una descripcion de lo que implico cada caso.
 
 ## Deploy en prod manual
 
@@ -200,6 +301,7 @@ docker build -t tap/tp-notifier .
 ```
 
 Una vez generado hay que levantarlo. Podes configurar el puerto que quieras dependiendo de tu despliegue en prod.
+
 En este ejemplo todos las conexiones entrantes al puerto 49568 se fowardiaran al puerto 8080 del contenedor, en donde corre la app.
 
 ```bash

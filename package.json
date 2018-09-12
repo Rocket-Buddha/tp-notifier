@@ -9,7 +9,6 @@
   "dependencies": {
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
-    "debug": "~2.6.9",
     "express": "~4.16.0",
     "helmet": "^3.13.0",
     "http-errors": "~1.6.2",

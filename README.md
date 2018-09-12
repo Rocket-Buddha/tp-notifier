@@ -60,12 +60,12 @@ Mongoose proporciona una increíble cantidad de funcionalidades para crear y tra
 * ObjectId
 * Array (Matriz)
 * Cada tipo de datos le permite especificar:
-  * un valor predeterminado
-  * una función de validación personalizada
-  * indica que se requiere un campo
-  * una función get que le permite manipular los datos antes de que se devuelva como un objeto
-  * una función de conjunto que le permite manipular los datos antes de guardarlos en la base de datos
-  * crear índices para permitir que los datos se obtengan más rápido
+  * Un valor predeterminado
+  * Una función de validación personalizada
+  * Indica que se requiere un campo
+  * Una función get que le permite manipular los datos antes de que se devuelva como un objeto
+  * Una función de conjunto que le permite manipular los datos antes de guardarlos en la base de datos
+  * Crear índices para permitir que los datos se obtengan más rápido
 
 #### BCrypt
 
@@ -94,11 +94,69 @@ Body parser es una función middleware para utilizar con express. Básicamente i
 
 Parece ser el estandar por defecto con NodeJS y Express. Por lo tanto está altamente testeado y existe muchísimos ejemplo al respecto lo que facilita el desarrollo.
 
-#### Debug
-
 #### Helmet
 
+##### ¿Que es Helmet?
+Helmet es una colleccion de 12 funciones middleware para express que implementan ciertas best practices de seguridad para sanitizar los request que llegan a nuestra aplicacion asi como tambien los responses que salen.
+
+##### ¿Por que elegimos Helmet?
+
+Helmet nos ofrece proteccion para 12 tipos diferentes de ataques ademas de que es una libreria ampliamente utilizada y estandar en el stack tecnologico de NodeJS.
+
+* ContentSecurityPolicy for setting Content Security Policy	 
+* Crossdomain for handling Adobe products’ crossdomain requests	 
+* DnsPrefetchControl controls browser DNS prefetching	✓
+* ExpectCt for handling Certificate Transparency	 
+* Frameguard to prevent clickjacking	✓
+* HidePoweredBy to remove the X-Powered-By header	✓
+* Hpkp for HTTP Public Key Pinning	 
+* Hsts for HTTP Strict Transport Security	✓
+* IeNoOpen sets X-Download-Options for IE8+	✓
+* NoCache to disable client-side caching	 
+* NoSniff to keep clients from sniffing the MIME type	✓
+* ReferrerPolicy to hide the Referer header	 
+* XssFilter adds some small XSS protections	✓
+
+Los tildados son los que vienen activados por defecto.
+
 #### JSON Web Token
+
+###### ¿Por que usamos JSON Web Tokens?
+
+Ademas de por ser requisito del TP :P.
+
+###### Guardar datos en los JWT
+Con un enfoque basado en cookies, simplemente guardamos el identificador de sesión.
+
+Los tokens por otro lado nos permiten guardar cualquier tipo de metadata, siempre que se trate de un JSON válido.
+
+La especificación de JWT indica que podemos incluir diferentes tipos de datos (llamados claims), y que se pueden guardar como datos reservados, públicos y privados.
+
+Dependiendo del contexto, podemos optar por usar una cantidad mínima de claims, y guardar sólo la identificación de usuario y el vencimiento del token, o bien podemos incluir claims adicionales, como el email del usuario, quién emitió el token, los alcances y/o permisos de los que dispone el usuario, etcétera.
+
+###### Performance
+Al utilizar una autenticación basada en cookies, desde backend se debe realizar una búsqueda de la sesión (correspondiente al identificador enviado por el cliente; ya sea en archivos, en una base de datos SQL tradicional o una alternativa NoSQL). En ese caso es muy probable que la ida y vuelta tome más tiempo si lo comparamos con la decodificación de un token. Además, como se pueden almacenar datos adicionales en los tokens (como el nivel de permisos), podemos disminuir la cantidad de búsquedas requeridas para obtener y procesar los datos solicitados.
+
+Por ejemplo, supongamos que tenemos un recurso /api/orders en nuestra API que devuelve las últimas órdenes registradas en nuestra aplicación, pero sólo los usuarios con rol administrador tienen acceso para ver esta data.
+
+En un enfoque basado en cookies, una vez que se realiza la petición, desde backend es necesario hacer una consulta para verificar que la sesión es válida, otra búsqueda para acceder a los datos del usuario y verificar que tenga el rol de administrador, y finalmente una tercera consulta para obtener los datos.
+
+Por otro lado, usando JWT, podemos guardar el rol del usuario en el token. Así, una vez que la petición se realiza y el token se valida, necesitamos realizar una sola consulta a la base de datos (para acceder a la información de las órdenes).
+
+###### Listo para móviles
+Las APIs modernas no solo interactúan con el navegador.
+
+Escribir correctamente una API implica que pueda ser usada tanto por navegadores como desde plataformas móviles nativas (como iOS y Android).
+
+Las plataformas móviles nativas y las cookies no operan muy bien en conjunto, ya que se debe tener en cuenta toda una serie de consideraciones para su correcto funcionamiento.
+
+Los tokens, por otro lado, son mucho más fáciles de implementar (tanto en iOS como en Android). También son más fáciles de implementar para aplicaciones y servicios de Internet of Things (que no incorporan el concepto de gestión de cookies).
+
+
+
+##### ¿Por que elegimos la libreria jsonwebtoken ?
+
+Por ser la libreria mas ampliamente utilizada para este proposito en el contexto de NodeJS, lo que implica cierto grado de maduracion.
 
 #### Moment
 

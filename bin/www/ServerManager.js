@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const debug = require('debug')('tp-notifier:server');
+//const debug = require('debug')('tp-notifier:server');
 const Http = require('http');
 const Main = require('../../src/core/Main');
 
@@ -50,11 +50,11 @@ class ServerManager {
       : `Port ${ServerManager.port}`;
     switch (error.code) {
       case 'EACCES':
-        debug(`${bind} requires elevated privileges`);
+        //debug(`${bind} requires elevated privileges`);
         process.exit(1);
         break;
       case 'EADDRINUSE':
-        debug(`${bind} is already in use`);
+        //debug(`${bind} is already in use`);
         process.exit(1);
         break;
       default:
@@ -70,7 +70,7 @@ class ServerManager {
     const bind = typeof addr === 'string'
       ? `pipe ${addr}`
       : `port ${addr.port}`;
-    debug(`Listening on ${bind}`);
+    //debug(`Listening on ${bind}`);
   }
 
   /**

@@ -40,9 +40,9 @@ class BaseController {
       status: 'Error',
       message: 'Request invalido',
     };
-    try{
+    try {
       Logguer.logResponseInfo(pRes.get('correlationalId'), pEndpoint, pMethod, anwser);
-    } catch(err){
+    } catch (err) {
       console.log(err);
     } finally {
       pRes.status(400).json(anwser);

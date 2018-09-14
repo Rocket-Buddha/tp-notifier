@@ -33,7 +33,7 @@ class UserController extends BaseController {
         // Respondo que el post fue satisfactorio.
         UserController.responsePostsuccessfully(res);
       } else { // Si el request esta mal formado,
-        UserController.responseBadRequest("/users", "POST",res);
+        UserController.responseBadRequest('/users', 'POST', res);
       }
     } catch (err) {
       switch (err.code) {
@@ -44,7 +44,7 @@ class UserController extends BaseController {
         default:
           // Logueo el error.
           Logguer.logEndpointError(res.get('correlationalId'), '/users', 'POST', err);
-          UserController.responseInternalServerError("/users", "POST",res);
+          UserController.responseInternalServerError('/users', 'POST', res);
       }
     }
   }
@@ -67,8 +67,8 @@ class UserController extends BaseController {
     const anwser = {
       status: 'Error',
       message: 'Usuario duplicado',
-    }
-    Logguer.logResponseInfo(pRes.get('correlationalId'), "/users", "POST", anwser);
+    };
+    Logguer.logResponseInfo(pRes.get('correlationalId'), '/users', 'POST', anwser);
     pRes.status(400).json(anwser);
   }
 
@@ -80,8 +80,8 @@ class UserController extends BaseController {
     const anwser = {
       status: 'Ok',
       message: 'Se ha registrado correctamente',
-    }
-    Logguer.logResponseInfo(pRes.get('correlationalId'), "/authenticate", "POST", anwser);
+    };
+    Logguer.logResponseInfo(pRes.get('correlationalId'), '/authenticate', 'POST', anwser);
     pRes.status(200).json(anwser);
   }
 }

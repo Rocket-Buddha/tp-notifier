@@ -46,21 +46,21 @@ class MessagesController extends BaseController {
           await MessagesController.saveMessage(message);
           MessagesController.MessagePostedSuccessfully(res);
         } else { // Token invalido.
-          MessagesController.responseInvalidToken("/messages", "POST", res);
+          MessagesController.responseInvalidToken('/messages', 'POST', res);
         }
       } else { // Request invalido.
-        MessagesController.responseBadRequest("/messages", "POST",res);
+        MessagesController.responseBadRequest('/messages', 'POST', res);
       }
     } catch (err) {
       switch (err.code) {
         // Codigo de error de JWT No valido.
         case EXCEPTIONS.JWT_VALIDATION_ERROR.code:
-          MessagesController.responseInvalidToken("/messages", "POST", res);
+          MessagesController.responseInvalidToken('/messages', 'POST', res);
           break;
         default:// Error interno generico.
           // Logueo el error.
           Logguer.logEndpointError(res.get('correlationalId'), '/messages', 'POST', err);
-          MessagesController.responseInternalServerError("/messages", "POST", res);
+          MessagesController.responseInternalServerError('/messages', 'POST', res);
       }
     }
   }
@@ -131,9 +131,9 @@ class MessagesController extends BaseController {
     const answer = {
       mensaje: 'Mensaje posteado con exito',
     };
-    try{
-      Logguer.logResponseInfo(pRes.get('correlationalId'), "/authenticate", "POST", answer);
-    } catch (err){
+    try {
+      Logguer.logResponseInfo(pRes.get('correlationalId'), '/authenticate', 'POST', answer);
+    } catch (err) {
       console.log(err);
     } finally {
       pRes.status(200).json(answer);
@@ -188,13 +188,13 @@ class MessagesController extends BaseController {
         const messages = await MessagesController.getAllUserRecivedMessages(decode.username);
         MessagesController.MessageGetSuccessfully(res, messages);
       } else { // Token invalido.
-        MessagesController.responseInvalidToken("/messages", "GET",res);
+        MessagesController.responseInvalidToken('/messages', 'GET', res);
       }
     } catch (err) {
       switch (err.code) {
         // Codigo de error de JWT No valido.
         case EXCEPTIONS.JWT_VALIDATION_ERROR.code:
-          MessagesController.responseInvalidToken("/messages", "GET", res);
+          MessagesController.responseInvalidToken('/messages', 'GET', res);
           break;
         default:// Error interno generico.
           // Logueo el error.
@@ -210,8 +210,8 @@ class MessagesController extends BaseController {
    */
   static MessageGetSuccessfully(pRes, messages) {
     try {
-      Logguer.logResponseInfo(pRes.get('correlationalId'), "/authenticate", "GET", messages);
-    } catch (err){
+      Logguer.logResponseInfo(pRes.get('correlationalId'), '/authenticate', 'GET', messages);
+    } catch (err) {
       console.log(err);
     } finally {
       pRes.status(200).json(messages);

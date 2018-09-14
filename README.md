@@ -288,7 +288,9 @@ npm test
 
 El comando ejecutara todos los test del la aplicacion y mostrara en la consola un reporte con todos los casos probados y una descripcion de lo que implico cada caso.
 
-## Deploy en prod manual
+## Deploy
+
+### Buildeando el container por unica vez.
 
 Parado en cualquier carpeta:
 
@@ -296,8 +298,6 @@ Parado en cualquier carpeta:
 git clone https://github.com/Rocket-Buddha/tp-notifier.git
 cd tp-notifier
 ```
-
-Inyecta tus properties de produccion en tp-notifier/env/app.properties.
 
 Para buildear en el contenedor, parado en el root del proyecto.
 
@@ -310,7 +310,7 @@ Una vez generado hay que levantarlo. Podes configurar el puerto que quieras depe
 En este ejemplo todos las conexiones entrantes al puerto 49568 se fowardiaran al puerto 8080 del contenedor, en donde corre la app.
 
 ```bash
-docker run --security-opt apparmor:unconfined -p 49568:8080 -d tap/tp-notifier
+docker run --security-opt apparmor:unconfined -p 8080:8080 -p 9615:9615 -d tap/tp-notifier
 ```
 
 Para ambientes productivos es mas recomendable:
@@ -319,7 +319,7 @@ Para ambientes productivos es mas recomendable:
 docker run -p 49568:8080 -d tap/tp-notifier
 ```
 
-### Helpers
+#### Helpers
 
 Para poder revisar el contenedor:
 
@@ -344,4 +344,18 @@ Una vez finalizadas las tareas de deploy:
 ```bash
 cd ..
 rm -f /tp-notifier
+```
+
+### Inyectando properties productivas.
+
+Inyecta tus properties de produccion en tp-notifier/env/app.properties.
+
+### Monitoreo en prod
+
+```bash
+docker exec -i -t 5ef56bd3f150 node_modules/.bin/pm2 logs
+```
+
+```bash
+docker exec -it 302892fe565aa526d745fa94e27a87a8ea9a7064d20aadaec0db44a0cffe86b2 node_modules/.bin/pm2 monit
 ```

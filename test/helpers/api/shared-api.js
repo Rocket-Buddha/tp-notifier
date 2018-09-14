@@ -1,5 +1,5 @@
 // Constante de host de testing.
-exports.TESTING_HOST = 'http://localhost:3000';
+exports.TESTING_HOST = 'http://localhost:8080';
 // Usuario con el que se hacen todos los test de API.
 exports.USER = {
   username: 'pepito',

@@ -256,6 +256,11 @@ Access your realtime logs with.
 ###### Zero-config Load-Balancerlink / clusterizacion de instancias
 PM2 can scale up your application by creating several child processes that share the same server port. Doing this also allow you to restart your app with zero-seconds downtimes.
 
+###### The Ecosystem: Behavioral Application Configuration
+When deploying on multiple servers or when using multiple CLI arguments, an alternative to the command line becomes more conveninent for starting your apps.
+
+The purpose of the ecosystem file is to gather all options and environment variables for all your applications.
+
 ###### Logging management
 Manejo de loggins basicos entre instancias.
 

@@ -11,7 +11,7 @@ class ServerManager {
    * Metodo run para levantar el servidor.
    */
   static run() {
-    ServerManager.port = ServerManager.normalizePort(process.env.PORT || '3000');
+    ServerManager.port = ServerManager.normalizePort(process.env.PORT || '8080');
     ServerManager.main = new Main(ServerManager.port);
     ServerManager.myServer = Http.createServer(ServerManager.main.app);
     ServerManager.myServer.listen(ServerManager.port);

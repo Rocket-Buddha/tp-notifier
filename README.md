@@ -20,22 +20,23 @@ Express es un framework para aplicaciones web Node.js mínimo y flexible, basado
 
 ##### ¿Por que lo elegimos?
 
-Lo elegimos por ser simple, flexible, rapido, estandar y suficiente para nuestra API.
+Lo elegimos por ser simple, flexible, rápido, estándar y suficiente para nuestra API.
 
 #### MongoDB
 
 ##### ¿Que es MongoDB?
 
-MongoDB es una base de datos no SQL, no relaccional y orientada a documentos.
+MongoDB es una base de datos no SQL, no relacional y orientada a documentos.
 
-##### ¿Por que elegimos MongoDB?
+##### ¿Por qué elegimos MongoDB?
 
 * Velocidad. Si una aplicación necesita almacenar o acceder a mucha información en poco tiempo, se necesita una base de datos que aporte gran velocidad. Las bases de datos documentales son capaces de ser mucho más rápidas que las relacionales, pudiendo atender clientes que necesiten realizar muchas operaciones por segundo.
 
 * Volumen. En cuanto al tamaño de la base de datos, si tenemos una cantidad de información gigante o enorme, entonces tenemos unas necesidades importantes de volumen. Las bases de datos relacionales tienen tendencia a funcionar más lentamente cuando en una tabla se encuentran cantidades muy grandes de registros (del orden de un millón para arriba). Situaciones así obligan a los administradores a buscar soluciones, como dividir las tablas en diversos segmentos, produciendo un coste en el acceso a los datos y la operativa. Este no es un problema en las bases de datos NoSQL, que son capaces de administrar volúmenes gigantescos de datos en sus entidades.
 
-* Variabilidad. En bases de datos relacionales el esquema de la información está minuciosamente definido de antemano. Por ejemplo, no puedes inventarte campos en los registros sobre la marcha. En las bases de datos documentales, como MongoDB, no hay problema en que cada documento almacene campos distintos, pudiendo ser flexibles en cuanto al esquema de la información.
-Ante cualquiera de estas situaciones, las bases de datos pueden aportar una solución ideal para los proyectos. Sin embargo, siempre conviene recordar que no existen las balas de plata y las bases de datos relacionales todavía son muy importantes para la mayoría de las aplicaciones. Sobre todo, porque las ventajas de las NoSQL son en detrimento de ciertas operaciones básicas sobre los datos.
+* Variabilidad. En bases de datos relacionales el esquema de la información está minuciosamente definido de antemano. Por ejemplo, no podes agregar campos en los registros sobre la marcha. En las bases de datos documentales, como MongoDB, no hay problema en que cada documento almacene campos distintos, pudiendo ser flexibles en cuanto al esquema de la información.
+
+Siendo el producto planteado de alta concurrencia, volumen y de naturaleza variable respecto de sus requisitos. Optamos por MongoDB.
 
 * Desventajas
 
@@ -103,19 +104,19 @@ Helmet es una colleccion de 12 funciones middleware para express que implementan
 
 Helmet nos ofrece proteccion para 12 tipos diferentes de ataques ademas de que es una libreria ampliamente utilizada y estandar en el stack tecnologico de NodeJS.
 
-* ContentSecurityPolicy for setting Content Security Policy	 
-* Crossdomain for handling Adobe products’ crossdomain requests	 
-* DnsPrefetchControl controls browser DNS prefetching	✓
-* ExpectCt for handling Certificate Transparency	 
-* Frameguard to prevent clickjacking	✓
-* HidePoweredBy to remove the X-Powered-By header	✓
-* Hpkp for HTTP Public Key Pinning	 
-* Hsts for HTTP Strict Transport Security	✓
-* IeNoOpen sets X-Download-Options for IE8+	✓
-* NoCache to disable client-side caching	 
-* NoSniff to keep clients from sniffing the MIME type	✓
-* ReferrerPolicy to hide the Referer header	 
-* XssFilter adds some small XSS protections	✓
+* ContentSecurityPolicy for setting Content Security Policy  
+* Crossdomain for handling Adobe products’ crossdomain requests  
+* DnsPrefetchControl controls browser DNS prefetching ✓
+* ExpectCt for handling Certificate Transparency   
+* Frameguard to prevent clickjacking  ✓
+* HidePoweredBy to remove the X-Powered-By header ✓
+* Hpkp for HTTP Public Key Pinning   
+* Hsts for HTTP Strict Transport Security ✓
+* IeNoOpen sets X-Download-Options for IE8+ ✓
+* NoCache to disable client-side caching   
+* NoSniff to keep clients from sniffing the MIME type ✓
+* ReferrerPolicy to hide the Referer header  
+* XssFilter adds some small XSS protections ✓
 
 Los tildados son los que vienen activados por defecto.
 
@@ -153,64 +154,60 @@ Las plataformas móviles nativas y las cookies no operan muy bien en conjunto, y
 
 Los tokens, por otro lado, son mucho más fáciles de implementar (tanto en iOS como en Android). También son más fáciles de implementar para aplicaciones y servicios de Internet of Things (que no incorporan el concepto de gestión de cookies).
 
-
 ##### ¿Por que elegimos la libreria jsonwebtoken ?
 
-Por ser la libreria mas ampliamente utilizada para este proposito en el contexto de NodeJS, lo que implica cierto grado de maduracion.
+Por ser la librería mas ampliamente utilizada para este propósito en el contexto de NodeJS, lo que implica cierto grado de maduración.
 
 #### Moment
 
 ##### ¿Por que usar una libreria para formateo de fechas?
-Encapsulando los distintos formateos que necesitemos a los largo de la aplicacion en un helper de fechas nos aseguramos de que los programadores accederan a los formatos correctos, por otro lado utilizando una libreria probada para esto nos aseguramos de no reinventar la rueda y acceder a un producto probado con un grado de maduracion elevado.
+Encapsulando los distintos formateos que necesitemos a los largo de la aplicación en un helper de fechas nos aseguramos de que los programadores accederán a los formatos correctos, por otro lado utilizando una librería probada para esto nos aseguramos de no reinventar la rueda y acceder a un producto probado con un grado de maduración elevado.
 
 #### ¿Por que elegimos Moment?
-Por se runa libreria liviana, madura y altamente extendida.
+Por se runa librería liviana, madura y altamente extendida.
 
 #### Properties Reader
 
 ##### ¿Por que usar properties externas?
-Para tener la ventaja de poder modificar algo que puede variar sin tener que tocar distintos archivos del codigo fuente y recargar o recomipilar la aplicacion.
+Para tener la ventaja de poder modificar algo que puede variar sin tener que tocar distintos archivos del codigo fuente y recargar o recompilar la aplicación.
 
-Esto es especialmente util para inyectar distintas configuraciones correspondientes a distintos eviroments lease, dev, testing, staging, prod.
-
-##### ¿Por que elegimos COMPLETAR?
-COMPLETAR
+Esto es especialmente útil para inyectar distintas configuraciones correspondientes a distintos eviroments léase, dev, testing, staging, producción.
 
 #### Winston
 
 ##### ¿Por que logguear?
-Los logs son importantes en distintos momentos. A nivel preventivo se puede llegar a preever errores evaluando la saludo de nuestra aplicacion mediante el monitoreo, tomando acciones correctivas para que este no suceda. Cuando el error ya sucedio, es importante contar con un log que nos permita trazar con facilidad el error con un identificador correlaccional para poder entender por que sucede y coregirlo.
-Por otro lado, logs del sistema tambien pueden servir para auditar los datos enviados y recibidos entre subsistemas de manera tal de resolver una discrepancia y ver quien esta equivocado.
+Los logs son importantes en distintos momentos. A nivel preventivo se puede llegar a prever errores evaluando la saludo de nuestra aplicación mediante el monitoreo, tomando acciones correctivas para que este no suceda. Cuando el error ya sucedió, es importante contar con un log que nos permita trazar con facilidad el error con un identificador correlacional para poder entender por qué sucede y corregirlo.
+Por otro lado, logs del sistema también pueden servir para auditar los datos enviados y recibidos entre subsistemas de manera tal de resolver una discrepancia y ver quien está equivocado.
 
 ##### ¿Por que elegimos Winston Logguer?
-Winston logguer es un logguer anincronico, lo cual es bastante deseable ya que no bloquea el unico hilo de NodeJS, es multi transporte, de manera tal que podemos configurar varias formas de output, ya se por consola, archivo, o incluso bajar un transporte para Winston desarrollado por un tercero (ej: integracion con ELK mediante transporte para Logstash) mediante yarn o npm, ademas de ques extremadamente configurable en cuestiones de formato.
+Winston logguer es un logguer asincrónico, lo cual es bastante deseable ya que no bloquea el único hilo de NodeJS, es multi-transporte, de manera tal que podemos configurar varias formas de output, ya sea por consola, archivo, o incluso bajar un transporte para Winston desarrollado por un tercero (ej. integración con ELK mediante transporte para Logstash) mediante yarn o npm, además de que extremadamente configurable en cuestiones de formato.
 
-Por las razones antes mencionadas se ha convertido en el logguer estandar para NodeJS, lo que implica que ha tenido un grado de maduracion alto, esta ampliamente extendido y testeado.
+Por las razones antes mencionadas se ha convertido en el logguer estándar para NodeJS, lo que implica que ha tenido un grado de maduración alto, está ampliamente extendido y testeado.
 
 ###### UUID
-Implementamos la libreria UUID para generar un identificador de coorrelaccion, a partir de un current timestamp, entre logs para poder trazarlos con facilidad.
+Implementamos la librería UUID para generar un identificador de correlación, a partir de un current timestamp, entre logs para poder trazarlos con facilidad.
 
 #### Eslint con estilo Airbnb
 
-##### ¿Por que debemos usar un linter?
+##### ¿Por qué debemos usar un linter?
 
 Un linter es un software que asiste al programador en fundamentalmente 2 objetivos:
-  * Evitar haga algo en su codigo que sea considerado bad practice y mejor aun que implemente las best practices.
-  * Asistirlo para que su codigo siga la linea de estilo definida por el equipo y/o compañia en general.
+  * Evitar haga algo en su codigo que sea considerado bad practice y mejor aún que implemente las best practices.
+  * Asistirlo para que su código siga la línea de estilo definida por el equipo y/o compañía en general.
 
-##### ¿Por que esto me beneficia?
+##### ¿Por qué esto me beneficia?
 
-* Aplicar best practices en tu codigo hace que este sea menos propenso a errores y/o problemas relacionados con la calidad del producto final, como por ejemplo detrimentos de performance o agujeros de seguridad.
+* Aplicar best practices en tu código hace que este sea menos propenso a errores y/o problemas relacionados con la calidad del producto final, como por ejemplo detrimentos de performance o agujeros de seguridad.
 
-* Seguir una guia de estilo nos permite escribir codigo mas homogeneo con el resto del equipo y/o compañia de forma tal que la curva de entendimiento de este es menor, lo que facilita el mantenimiento haciendo que cualquier programador pueda mantener codigo de otro programador.
+* Seguir una guía de estilo nos permite escribir codigo mas homogéneo con el resto del equipo y/o compañía de forma tal que la curva de entendimiento de este es menor, lo que facilita el mantenimiento haciendo que cualquier programador pueda mantener código de otro programador.
 
 #### Jasmine
 
 ##### ¿Por que necesitamos testing automatizado?
 
-El testing automatizado es uno de los pilares fundamentales del concepto de integracion continua que a su vez es uno de lo spilares fundamentales de la filosofia DevOps.
+El testing automatizado es uno de los pilares fundamentales del concepto de integración continua que a su vez es uno de los pilares fundamentales de la filosofia DevOps.
 
-Es necesario implementar distintos niveles de testing automatizado par poder evaluar a esos niveles, constantemente y sin esfuerzo la saludos del codigo que se pretende integrar. Algunos de estos niveles son:
+Es necesario implementar distintos niveles de testing automatizado para poder evaluar a esos niveles, constantemente y sin esfuerzo la saludos del código que se pretende integrar. Algunos de estos niveles son:
 
 * Test unitario a nivel de clase.
 * Test de API E2E, end to end.
@@ -218,12 +215,12 @@ Es necesario implementar distintos niveles de testing automatizado par poder eva
 
 ##### ¿Por que elegimos Jasmine?
 
-Siendo que el TP es una API nosotros necesitabamos hacer test unitario y de API. Jasmine cumple con estos 2 propositos perfectamente.
+Siendo que el TP es una API nosotros necesitábamos hacer test unitario y de API. Jasmine cumple con estos 2 propósitos perfectamente.
 
-Lo elegimos particularmente por sobre otros por ser liviano y altamente extendido, lo que implica maduracion ademas de que es una suit completa en contraposicion al otro mas popular que es Mocha, quien necesita chai para completar la funcionalidad que se esperaria de un framework de test automatizado. 
+Lo elegimos particularmente por sobre otros por ser liviano y altamente extendido, lo que implica maduración además de que es una suit completa en contraposición al otro mas popular que es Mocha, quien necesita chai para completar la funcionalidad que se esperaría de un framework de test automatizado. 
 
 ##### Request
-Request es una libreria ampliamente extendida para ejecutar request http la cual usamos para ejecutar request desde los test de API.
+Request es una librería ampliamente extendida para ejecutar request http la cual usamos para ejecutar request desde los test de API.
 
 #### JSDoc
 
@@ -233,50 +230,44 @@ Las ventajas de esto son claras y bien conocidas y hacen a la facilidad de mante
 
 ##### ¿Por que elegimos JSDoc?
 
-Por ser el estandar de JS para documentar el codigo ademas que existen herramientas como la elegida jsdoc para sacar reportes de manera automatica a partir del parseo de este formato en el codigo.
+Por ser el estándar de JS para documentar el código además que existen herramientas como la elegida jsdoc para sacar reportes de manera automática a partir del parseo de este formato en el código.
 
 #### PM2
 
 ##### ¿Por que usar un administrador de processos?
 
-El problema del single thread de NodeJS. entro otras ventajas de deploy y gestion.
+El problema del single thread de NodeJS. entro otras ventajas de deploy y gestión.
 
 ##### ¿Por que elegimos PM2?
 
-###### Forever Alivelink
-Once started, your app is forever alive, auto-restarting across crashes and machine restarts.
-
-###### Process Managementlink
-All your applications are run in the background and can be easily managed.
-
-###### Log Managementlink
-Application logs are saved in the hard disk of your servers into ~/.pm2/logs/.
-Access your realtime logs with.
-
-###### Zero-config Load-Balancerlink / clusterizacion de instancias
-PM2 can scale up your application by creating several child processes that share the same server port. Doing this also allow you to restart your app with zero-seconds downtimes.
-
-###### The Ecosystem: Behavioral Application Configuration
-When deploying on multiple servers or when using multiple CLI arguments, an alternative to the command line becomes more conveninent for starting your apps.
-
-The purpose of the ecosystem file is to gather all options and environment variables for all your applications.
-
-###### Logging management
-Manejo de loggins basicos entre instancias.
-
-###### Easy deploy with SSHlink
-Automate your deployment and avoid to ssh in all your servers one by one.
-0 downtime deploy
-greceful deploy
+###### La aplicación se mantiene siempre viva
+La aplicación se mantendrá siempre viva, reiniciando la instancia particular que haya tenido el crash, o al reiniciar el servidor se iniciara sola.
 
 ###### Monitoreo
-You can monitor your app in the terminal and check app health (CPU usage, memory used, request/min and more).s
+Las instancias manejadas de esta manera y su salud pueden ser fácilmente monitoreadas local como remotamente. Se pueden monitoriar además cuestiones sobre consumo de memoria y procesador previniendo fallas que puedan llegar a ocurrir en producción.
+
+###### Gestion de logs
+Logs de alto nivel out of the box.
+
+###### Balanceo de carga y 0 down time deploy
+Balanceo de carga sin ninguna configuración. PM2 balance la carga entre instancias. Esto también nos permite hacer deploy con 0 down time.
+
+###### Argumentos CLI
+Haciendo uso de argumentos de CLI podemos configurar PM2 para funcionar en distintos entornos.
+
+###### Logging management
+Manejo de loggins básicos entre instancias.
+
+###### Deploy automatizado simple
+PM2 deploy nos ofrece una forma practica y sensilla de realizar deploys.
 
 #### Docker
 
-- Apps always run in the same environment (local computer, live server).
-- Apps are sandboxed to keep them separate and avoid potential conflicts.
-- Apps are easy to share with all their dependencies.
+#### ¿Por qué usar Docker?
+
+* Docker nos permite asegurarnos de que la aplicación corre en un ambiente con precisamente, ni mas ni menos que las librerías que necesita, como si fuese una VM pero con la ventaja de ser mucho mas compacto un contenedor que una máquina virtual.
+* De esta misma forma sabemos que si tenemos mas de una misma aplicación corriendo en el mismo nodo ya sea lógico o físico, estas están ailadas entre ellas en sus respectivos contenedores y que sus dependencias no tendrán conflictos entre ellas.
+* Podemos compartir una aplicación simplemente compartiendo el archivo de imagen del contenedor lo que facilita mucho las tareas de integración continua.
 
 ## Testing
 
@@ -286,7 +277,7 @@ Parado en el root del proyecto ejecuta:
 npm test
 ```
 
-El comando ejecutara todos los test del la aplicacion y mostrara en la consola un reporte con todos los casos probados y una descripcion de lo que implico cada caso.
+El comando ejecutara todos los test de la aplicación y mostrara en la consola un reporte con todos los casos probados y una descripción de lo que implico cada caso.
 
 ## Deploy
 
@@ -305,7 +296,7 @@ Para buildear en el contenedor, parado en el root del proyecto.
 docker build -t tap/tp-notifier .
 ```
 
-Una vez generado hay que levantarlo. Podes configurar el puerto que quieras dependiendo de tu despliegue en prod.
+Una vez generado hay que levantarlo. Podes configurar el puerto que quieras dependiendo de tu despliegue en producción.
 
 En este ejemplo todos las conexiones entrantes al puerto 49568 se fowardiaran al puerto 8080 del contenedor, en donde corre la app.
 
@@ -313,7 +304,7 @@ En este ejemplo todos las conexiones entrantes al puerto 49568 se fowardiaran al
 docker run --security-opt apparmor:unconfined -p 8080:8080 -p 9615:9615 -d tap/tp-notifier
 ```
 
-Para ambientes productivos es mas recomendable:
+Para ambientes productivos es más recomendable:
 
 ```bash
 docker run -p 49568:8080 -d tap/tp-notifier
@@ -327,7 +318,7 @@ Para poder revisar el contenedor:
 sudo docker exec -i -t <container_id> /bin/bash
 ```
 
-Borrrar todos los contenedores:
+Borrar todos los contenedores:
 
 ```bash
 docker rm $(docker ps -a -q)
@@ -346,11 +337,11 @@ cd ..
 rm -f /tp-notifier
 ```
 
-### Inyectando properties productivas.
+### Inyectando properties productivas
 
-Inyecta tus properties de produccion en tp-notifier/env/app.properties.
+Inyecta tus properties de producción en tp-notifier/env/app.properties.
 
-### Monitoreo en prod
+### Monitoreo en producción
 
 ```bash
 docker exec -i -t 5ef56bd3f150 node_modules/.bin/pm2 logs
@@ -359,3 +350,4 @@ docker exec -i -t 5ef56bd3f150 node_modules/.bin/pm2 logs
 ```bash
 docker exec -it 302892fe565aa526d745fa94e27a87a8ea9a7064d20aadaec0db44a0cffe86b2 node_modules/.bin/pm2 monit
 ```
+

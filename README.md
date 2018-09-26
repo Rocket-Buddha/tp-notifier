@@ -4,7 +4,7 @@
 
 ### Arquitectura
 
-![Modelo de componentes](https://lh4.googleusercontent.com/tEh7P2uzvXaB_lUuNxNWIbd6xS3F_iRVEt5W_6-o3GH1CGJSg1pSnXA0j6ZcV-hHeLSWrkS7yQdVetNDIIr4=w1366-h614)
+[Modelo de componentes](https://drive.google.com/file/d/1i_kP5ZKYkafwc1NCkCTM_BkL4ysPAZT0/view?usp=sharing)
 
 ### Librerías utilizadas
 

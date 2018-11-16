@@ -4,8 +4,6 @@ const BaseController = require('../spi/BaseController');
 const MessagesModel = require('../messages/MessagesModel');
 // Helper de formateo de tiempo.
 const Time = require('../helpers/Time');
-// Helper de Json web tokens.
-const JWT = require('../helpers/JWT');
 // Helper de loggin.
 const Logguer = require('../helpers/Logguer');
 // Definiciones de errores.
@@ -75,27 +73,6 @@ class MessagesController extends BaseController {
     return pRequest.body.mensaje
       && pRequest.body.destinatarios
       && pRequest.body.destinatarios[0];
-  }
-
-  /**
-   * Obtiene el token desde el request.
-   * @param {Request} pReq - Request de post de login.
-   * @return {String} String del token que viene en el header del request.
-   */
-  static getTokenFromRequest(pReq) {
-    // return pReq.query.token;
-    // return pReq.body.token;
-    return pReq.headers['x-access-token'];
-  }
-
-  /**
-   * Metodo para validar que el Token sea valido.
-   * @param {String} pToken - Stringo con el Token enviado en el request.
-   * @return {Prommise} Promesa de devuelve el Token decencriptado,
-   * o sea el payload cuando finaliza.
-   */
-  static async checkToken(pToken) {
-    return JWT.verify(pToken);
   }
 
   /**
@@ -210,7 +187,7 @@ class MessagesController extends BaseController {
    */
   static MessageGetSuccessfully(pRes, messages) {
     try {
-      Logguer.logResponseInfo(pRes.get('correlationalId'), '/authenticate', 'GET', messages);
+      Logguer.logResponseInfo(pRes.get('correlationalId'), '/messages', 'GET', messages);
     } catch (err) {
       console.log(err);
     } finally {

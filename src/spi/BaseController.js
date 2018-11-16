@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // Helper de loggin.
 const Logguer = require('../helpers/Logguer');
+// Helper de Json web tokens.
+const JWT = require('../helpers/JWT');
 
 /**
  * Clase abstracta BaseController.
@@ -29,6 +31,27 @@ class BaseController {
    */
   static buildRouter() {
     throw new Error('You have to implement the method build router in your own extended class!');
+  }
+
+  /**
+   * Obtiene el token desde el request.
+   * @param {Request} pReq - Request de post de login.
+   * @return {String} String del token que viene en el header del request.
+   */
+  static getTokenFromRequest(pReq) {
+    // return pReq.query.token;
+    // return pReq.body.token;
+    return pReq.headers['x-access-token'];
+  }
+
+  /**
+   * Metodo para validar que el Token sea valido.
+   * @param {String} pToken - Stringo con el Token enviado en el request.
+   * @return {Prommise} Promesa de devuelve el Token decencriptado,
+   * o sea el payload cuando finaliza.
+   */
+  static async checkToken(pToken) {
+    return JWT.verify(pToken);
   }
 
   /**

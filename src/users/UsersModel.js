@@ -12,6 +12,7 @@ const usersModelSingleton = require('mongoose')
       },
       password: String,
       email: String,
+      status: Boolean,
     }));
 // Singleton, evitamos que existan mas instancias del modelo de usuarios.
 module.exports = usersModelSingleton;

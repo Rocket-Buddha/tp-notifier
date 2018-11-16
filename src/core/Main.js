@@ -7,6 +7,7 @@ const Properties = require('../helpers/Properties.js');
 const UserControllerSingleton = require('../users/UsersController');
 const AuthControllerSingleton = require('../auth/AuthController');
 const MessagesControllerSingleton = require('../messages/MessagesController');
+const StatusControllerSingleton = require('../status/StatusController');
 
 /**
  * Clase Main para punto de entrada de la aplicacion.
@@ -55,7 +56,7 @@ class Main {
   static addTransactionUniqueId(req, res, next) {
     if (req.headers['correlational-id']) {
       res.set('correlationalId', req.headers['correlational-id']);
-    } else{
+    } else {
       res.set('correlationalId', uuidv1());
     }
     next();
@@ -72,6 +73,8 @@ class Main {
     this.app.use('/authenticate', AuthControllerSingleton.router);
     // Obtiene el singleton del controlador de mensajes y mapea su router en la app.
     this.app.use('/messages', MessagesControllerSingleton.router);
+    // Obtiene el singleton del controlador de status.
+    this.app.use('/status', StatusControllerSingleton.router);
   }
 
   /**
@@ -92,13 +95,13 @@ class Main {
     // Retorno el string armado.
     return `mongodb://${
       Properties.get('db.mongo.user')
-      }:${
+    }:${
       Properties.get('db.mongo.pass')
-      }@${
+    }@${
       Properties.get('db.mongo.host')
-      }:${
+    }:${
       Properties.get('db.mongo.port')
-      }/${
+    }/${
       Properties.get('db.mongo.schema')}`;
   }
 }

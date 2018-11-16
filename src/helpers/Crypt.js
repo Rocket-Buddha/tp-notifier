@@ -20,6 +20,7 @@ class Crypt {
       username: pRequest.body.username,
       password: hashedPass,
       email: pRequest.body.email,
+      status: false,
     }));
   }
 

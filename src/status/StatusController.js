@@ -35,8 +35,8 @@ class StatusController extends BaseController {
         // Nunca deberia llegar a esta validacion si el token no es valido.
         // Antes catcheara el error. Verifico por las dudas.
         if (decode.username) {
-          const status = StatusController.getStatusFromRequest(req);
-          await UsersModel.update({ username: decode.username }, { $set: { status } });
+          const statusVar = StatusController.getStatusFromRequest(req);
+          await UsersModel.update({ username: decode.username }, { $set: { status: statusVar } });
           StatusController.StatusChangedSuccessfully(res);
         } else { // Token invalido.
           StatusController.responseInvalidToken('/status', 'PUT', res);
@@ -65,7 +65,7 @@ class StatusController extends BaseController {
    * @return {Boolean} Retorna si todo los parametros necesarios en el request existen.
    */
   static checkPutRequest(pRequest) {
-    return pRequest.body 
+    return pRequest.body
     && (pRequest.body.estado === true
       || pRequest.body.estado === false);
   }

@@ -21,6 +21,8 @@ class MessagesController extends BaseController {
     this.router.post('/', async (req, res) => { await MessagesController.handlePost(req, res); });
     // GET
     this.router.get('/', async (req, res) => { await MessagesController.handleGet(req, res); });
+    // PUT
+    this.router.put('/:id', async (req, res) => { await MessagesController.handlePut(req, res); });
   }
 
   /**
@@ -60,6 +62,78 @@ class MessagesController extends BaseController {
           Logguer.logEndpointError(res.get('correlationalId'), '/messages', 'POST', err);
           MessagesController.responseInternalServerError('/messages', 'POST', res);
       }
+    }
+  }
+
+  /**
+   * Madsa
+   * @param {Request} req - Request enviado.
+   * @param {Response} res - Response para responder.
+   */
+  static async handlePut(req, res) {
+    try {
+      // Logging request.
+      Logguer.logRequestInfo(res.get('correlationalId'), '/messages', 'PUT', req);
+      // Verificar que el request este bien conformado.
+      if (MessagesController.checkPutRequest(req)) {
+        const token = MessagesController.getTokenFromRequest(req);
+        // Verificar que el token sea correcto.
+        const decode = await MessagesController.checkToken(token);
+        // Nunca deberia llegar a esta validacion si el token no es valido.
+        // Antes catcheara el error. Verifico por las dudas.
+        if (decode.username) {
+          const readedVar = MessagesController.getReadedFromRequest(req);
+          await MessagesModel.update({ _id: req.params.id }, { $set: { readed: readedVar } });
+          MessagesController.ReadedChangedSuccessfully(res);
+        } else { // Token invalido.
+          MessagesController.responseInvalidToken('/messages', 'PUT', res);
+        }
+      } else { // Request invalido.
+        MessagesController.responseBadRequest('/messages', 'PUT', res);
+      }
+    } catch (err) {
+      switch (err.code) {
+        // Codigo de error de JWT No valido.
+        case EXCEPTIONS.JWT_VALIDATION_ERROR.code:
+          MessagesController.responseInvalidToken('/messages', 'PUT', res);
+          break;
+        default:// Error interno generico.
+          // Logueo el error.
+          Logguer.logEndpointError(res.get('correlationalId'), '/messages', 'PUT', err);
+          MessagesController.responseInternalServerError('/messages', 'PUT', res);
+      }
+    }
+  }
+
+  /**
+   * asdas
+   * @param {Request} pRequest - Checkea si el request del POST de login es correcto.
+   * @return {Boolean} Retorna si todo los parametros necesarios en el request existen.
+   */
+  static checkPutRequest(pRequest) {
+    return (pRequest.body.leido === true
+      || pRequest.body.leido === false)
+      && pRequest.params.id;
+  }
+
+  static getReadedFromRequest(pRequest) {
+    return pRequest.body.leido;
+  }
+
+  /**
+   * gfhfg
+   * @param {Response} pRes - Response que el metodo utilizara para contestar.
+   */
+  static ReadedChangedSuccessfully(pRes) {
+    const answer = {
+      mensaje: 'Se ha modificado correctamente',
+    };
+    try {
+      Logguer.logResponseInfo(pRes.get('correlationalId'), '/messages', 'PUT', answer);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      pRes.status(200).json(answer);
     }
   }
 
@@ -137,6 +211,7 @@ class MessagesController extends BaseController {
     // Por cada mensaje
     messages.forEach((element) => {
       messagesRespond.mensajesRecibidos.push({
+        id: element.id,
         remitente: element.sender,
         mensaje: element.message,
         enviado: element.timestamp,

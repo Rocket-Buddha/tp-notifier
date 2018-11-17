@@ -132,7 +132,7 @@ class UserController extends BaseController {
    * @param {String} pUsername
    */
   static async getAllUsers() {
-    const users = await UsersModel.find();
+    const users = await UsersModel.find({}, '_id username email status');
     // Objeto que se va a enviar en la respuesta.
     const usersRespond = {
       status: 'Ok',
